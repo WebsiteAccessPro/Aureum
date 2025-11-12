@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "914079756061",
+    "firebase_url": "https://aureum-a2972-default-rtdb.firebaseio.com",
+    "project_id": "aureum-a2972",
+    "storage_bucket": "aureum-a2972.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914079756061:android:f849a6e134e95aba923bf4",
+        "android_client_info": {
+          "package_name": "com.example.aureum1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "914079756061-g8qgsgpk99ed6oeaaj9kgqf7r44smbjn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aureum1",
+            "certificate_hash": "947940974b6a0617ac009f4801ec207be0d84d0e"
+          }
+        },
+        {
+          "client_id": "914079756061-hp3db29kvv40aqq5gjt8u92japkbu7c8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGRGWLm_18wAphq1GsWCwxg0oUvjjPb84"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "914079756061-hp3db29kvv40aqq5gjt8u92japkbu7c8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

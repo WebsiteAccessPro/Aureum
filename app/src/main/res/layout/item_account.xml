@@ -1,0 +1,68 @@
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="164dp"
+    android:layout_height="100dp"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#1F000000">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+
+        <!-- Nombre -->
+
+        <!-- Número -->
+        <TextView
+            android:id="@+id/tvAccountName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Efectivo"
+            android:textColor="@color/aureum_text"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvAccountMasked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0000 0000 0000 0000"
+            android:textColor="#8A8A8A"
+            android:textSize="10sp"
+            app:layout_constraintTop_toBottomOf="@id/tvAccountName"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="2dp" />   <!-- ← CORRECTO -->
+
+        <!-- Chip a la derecha del número -->
+        <ImageView
+            android:id="@+id/imgChip"
+            android:layout_width="22dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/chip"
+            android:contentDescription="Chip"
+            app:layout_constraintTop_toTopOf="@id/tvAccountMasked"
+            app:layout_constraintBottom_toBottomOf="@id/tvAccountMasked"
+            app:layout_constraintStart_toEndOf="@id/tvAccountMasked"/>
+
+        <!-- Monto -->
+        <TextView
+            android:id="@+id/tvAccountAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PEN S/.100"
+            android:textColor="@color/aureum_text"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/tvAccountMasked"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="2dp" />   <!-- ← CORRECTO -->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="12dp"
+        android:gravity="center_horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFFFFF"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="6dp"
+            android:minHeight="360dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp"
+                android:gravity="center_horizontal">
+
+                <!-- TÍTULO -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Datos Personales"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#5B4E2D"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- NOMBRE -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilName"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:hint="Nombre completo"
+                    app:startIconDrawable="@drawable/ic_person_24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:textColor="#1E3C72"
+                        android:textColorHint="#9BB3D4"
+                        android:textSize="13sp"
+                        android:padding="6dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- TELÉFONO -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPhone"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:hint="Número de teléfono"
+                    app:startIconDrawable="@drawable/ic_phone_24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:textColor="#1E3C72"
+                        android:textColorHint="#9BB3D4"
+                        android:textSize="13sp"
+                        android:padding="6dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- GÉNERO -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilGender"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:hint="Género"
+                    app:startIconDrawable="@drawable/ic_person_24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/actvGender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:textColor="#1E3C72"
+                        android:textColorHint="#9BB3D4"
+                        android:textSize="13sp"
+                        android:padding="6dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- FECHA DE NACIMIENTO -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilBirthDate"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:hint="Fecha de nacimiento"
+                    app:startIconDrawable="@drawable/ic_calendar_24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etBirthDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:textColor="#1E3C72"
+                        android:textColorHint="#9BB3D4"
+                        android:textSize="13sp"
+                        android:padding="6dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- EDAD -->
+                <TextView
+                    android:id="@+id/tvAge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edad: -"
+                    android:textSize="14sp"
+                    android:textColor="#5B4E2D"
+                    android:layout_marginBottom="16dp"
+                    android:visibility="gone" />
+
+                <!-- BOTÓN SIGUIENTE -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNext"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:text="Siguiente"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    app:backgroundTint="@color/aureum_gold"
+                    app:cornerRadius="14dp"
+                    android:elevation="3dp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</ScrollView>

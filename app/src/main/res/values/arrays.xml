@@ -1,0 +1,13 @@
+<resources>
+    <string-array name="monedas_array">
+        <item>  PEN</item>
+        <item>  USD</item>
+        <item>  EUR</item>
+    </string-array>
+    <string-array name="tipos_cuenta">
+        <item>  Efectivo</item>
+        <item>  Ahorros</item>
+        <item>  Corriente</item>
+        <item>  Tarjeta</item>
+    </string-array>
+</resources>

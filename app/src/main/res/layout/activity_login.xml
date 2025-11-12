@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF5DD"
+    android:fitsSystemWindows="true"
+    tools:context=".controller.activities.LoginActivity">
+
+    <!-- Top bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/btnHelp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@drawable/help"
+            android:contentDescription="Ayuda"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Contenedor desplazable -->
+    <ScrollView
+        android:id="@+id/scrollContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:gravity="center_horizontal">
+
+            <!-- Card principal -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/loginCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
+                android:backgroundTint="#FFFFFF"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:paddingHorizontal="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <!-- Bienvenida -->
+                    <TextView
+                        android:id="@+id/tvWelcome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hola,\nbienvenido a"
+                        android:textColor="#5B4E2D"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_marginBottom="6dp"/>
+
+                    <!-- Logo -->
+                    <ImageView
+                        android:id="@+id/imgLogo"
+                        android:layout_width="120dp"
+                        android:layout_height="110dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icono"
+                        android:layout_marginBottom="6dp"/>
+
+                    <!-- Slogan -->
+                    <TextView
+                        android:id="@+id/tvSlogan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tu acceso rápido y seguro"
+                        android:textColor="#5B4E2D"
+                        android:textSize="13sp"
+                        android:textStyle="italic"
+                        android:layout_marginBottom="10dp"/>
+
+                    <!-- Formulario -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="6dp">
+
+                        <!-- Usuario / Correo -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Usuario o correo"
+                            app:startIconDrawable="@drawable/ic_mail_24"
+                            app:boxBackgroundMode="outline"
+                            app:boxCornerRadiusTopStart="16dp"
+                            app:boxCornerRadiusBottomEnd="16dp"
+                            app:boxStrokeColor="#1E3C72"
+                            app:boxBackgroundColor="#FFFFFF"
+                            android:layout_marginBottom="8dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etEmail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textEmailAddress"
+                                android:padding="10dp"
+                                android:textColor="#1E3C72"
+                                android:textColorHint="#9BB3D4"
+                                android:textSize="14sp"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Contraseña -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Contraseña"
+                            app:endIconMode="password_toggle"
+                            app:startIconDrawable="@drawable/ic_lock_24"
+                            app:boxBackgroundMode="outline"
+                            app:boxCornerRadiusTopStart="16dp"
+                            app:boxCornerRadiusBottomEnd="16dp"
+                            app:boxStrokeColor="#1E3C72"
+                            app:boxBackgroundColor="#FFFFFF"
+                            android:layout_marginBottom="4dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etPassword"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textPassword"
+                                android:padding="10dp"
+                                android:textColor="#1E3C72"
+                                android:textColorHint="#9BB3D4"
+                                android:textSize="14sp"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Recordarme + Olvidaste tu clave -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="4dp"
+                            android:layout_marginBottom="12dp">
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/chkRemember"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Recordarme"
+                                android:textColor="#1E3C72"
+                                android:textSize="12sp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"/>
+
+                            <TextView
+                                android:id="@+id/tvForgot"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="¿Olvidaste tu clave?"
+                                android:textColor="#5B4E2D"
+                                android:textSize="12sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/chkRemember"
+                                app:layout_constraintBottom_toBottomOf="@id/chkRemember"/>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <!-- Botón Login -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnLogin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="48dp"
+                            android:text="Iniciar Sesión"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:backgroundTint="#C9AA64"
+                            app:cornerRadius="24dp"
+                            android:elevation="6dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="10dp"/>
+
+                    </LinearLayout>
+
+                    <!-- Crear cuenta -->
+                    <TextView
+                        android:id="@+id/tvCreateAccount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¿No tienes cuenta? Regístrate"
+                        android:textColor="#5B4E2D"
+                        android:textSize="13sp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <!-- Divider social -->
+                    <TextView
+                        android:id="@+id/tvSocialDivider"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="---- Inicia sesión usando ----"
+                        android:textColor="#8A8A8A"
+                        android:textSize="13sp"
+                        android:gravity="center"
+                        android:layout_marginBottom="6dp"/>
+
+                    <!-- Botones sociales -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:weightSum="2">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnGoogle"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Google"
+                            android:textAllCaps="false"
+                            android:backgroundTint="#FFFFFF"
+                            app:icon="@drawable/cromo"
+                            app:iconGravity="textStart"
+                            app:iconPadding="6dp"
+                            app:iconTint="@null"
+                            android:elevation="3dp"
+                            android:layout_marginEnd="6dp"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnFacebook"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Facebook"
+                            android:textAllCaps="false"
+                            android:backgroundTint="#FFFFFF"
+                            app:icon="@drawable/facebook"
+                            app:iconGravity="textStart"
+                            app:iconPadding="6dp"
+                            app:iconTint="@null"
+                            android:elevation="3dp"
+                            android:layout_marginStart="6dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Acceso Biométrico -->
+            <LinearLayout
+                android:id="@+id/biometricSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="24dp">
+
+                <ImageView
+                    android:id="@+id/imgBiometric"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/huella"
+                    android:contentDescription="Acceso Biométrico"/>
+
+                <TextView
+                    android:id="@+id/tvBiometric"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Acceso Biométrico: Huella digital"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

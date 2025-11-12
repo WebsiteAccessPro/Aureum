@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/aureum_cream">
+
+    <!-- 🔸 AppBar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#C9AA66"
+        android:elevation="4dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbarAjustesCuenta"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:paddingHorizontal="8dp"
+            app:navigationIcon="@drawable/flechaizquierda2"
+            app:title="Ajustes de Cuentas"
+            app:titleCentered="true"
+            app:titleTextColor="@color/aureum_text" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- 🔸 Lista de cuentas -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerCuentas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:padding="8dp"
+        android:clipToPadding="false"/>
+
+    <!-- 🔸 Botón flotante para añadir -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabNuevaCuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:contentDescription="Añadir cuenta"
+        android:tint="@color/aureum_text"
+        app:backgroundTint="@color/aureum_gold"
+        app:layout_anchor="@id/recyclerCuentas"
+        app:layout_anchorGravity="bottom|end"
+        app:srcCompat="@drawable/mas" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

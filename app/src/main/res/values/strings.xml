@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Aureum</string>
+    <!-- Para restablecer contraseña -->
+    <string name="forgot_password">¿Has olvidado tu contraseña?</string>
+    <string name="enter_your_email">Ingresa tu correo</string>
+    <string name="send">Enviar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="reset_email_sent">Te enviamos un correo para restablecer tu contraseña.</string>
+
+    <!-- Facebook -->
+    <string name="facebook_app_id">1034235112034350</string>
+    <string name="fb_login_protocol_scheme">fb1034235112034350</string>
+    <string name="facebook_client_token">7202eba28474411504819bab55bff43f</string>
+    <string name="password">Contraseña</string>
+    <string name="link_google_title">Vincular Google</string>
+    <string name="link_google_message">%1$s ya tiene cuenta con contraseña. Ingresa tu contraseña para vincular Google.</string>
+    <string name="link">Vincular</string>
+    <string name="password_required">Debes ingresar tu contraseña.</string>
+
+    <string name="menu_settings">Ajustes</string>
+
+    <string-array name="opciones_tiempo">
+        <item>Hoy</item>
+        <item>Esta semana</item>
+        <item>Este mes</item>
+        <item>Este año</item>
+    </string-array>
+
+</resources>

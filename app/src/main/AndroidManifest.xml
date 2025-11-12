@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permisos necesarios -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:name=".AureumApp"
+        android:theme="@style/Theme.Aureum">
+
+        <!-- Arranca en Login -->
+        <activity
+            android:name=".controller.activities.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- RegisterActivity -->
+        <activity
+            android:name=".controller.activities.Registro.RegisterActivity"
+            android:exported="true" />
+
+        <!-- MainActivity -->
+        <activity
+            android:name=".controller.activities.MainActivity"
+            android:exported="false"/>
+
+        <activity android:name=".controller.activities.AjustesCuentaActivity" />
+        <activity
+            android:name=".controller.activities.EditCuentaActivity"
+            android:exported="false"
+            android:label="Editar cuenta"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity android:name=".controller.activities.NuevaCuentaActivity" />
+
+        <!-- Editar Perfil -->
+        <activity
+            android:name=".controller.activities.EditUserActivity"
+            android:exported="false"
+            android:label="Editar perfil"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Facebook SDK Activities -->
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".controller.activities.AddRecordActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Aureum" />
+
+        <!-- SearchActivity -->
+        <activity
+            android:name=".controller.activities.SearchActivity"
+            android:exported="false" />
+
+        <!-- Full list Activity -->
+        <activity
+            android:name=".controller.activities.FullRecordListActivity"
+            android:exported="false"/>
+
+        <activity android:name=".controller.activities.Registro.RegistroIngresoActivity"
+            android:exported="false"/>
+        <activity android:name=".controller.activities.Registro.RegistroGastoActivity"
+            android:exported="false"/>
+        <activity android:name=".controller.activities.Registro.RegistroTransferenciaActivity"
+            android:exported="false"/>
+
+        <activity android:name=".controller.activities.Registro.SeleccionCuentaActivity"
+            android:exported="false"/>
+        <activity android:name=".controller.activities.Registro.SeleccionCategoriaActivity"
+            android:exported="false"/>
+
+        <!-- Deudas: seleccionar registro y crear registro manual -->
+        <activity android:name=".controller.activities.SeleccionRegistroDeudaActivity"
+            android:exported="false"/>
+        <activity android:name=".controller.activities.CrearDeudaActivity"
+            android:exported="false"/>
+        <activity android:name=".controller.activities.WalletSelectRecordActivity"
+            android:exported="false"/>
+        <activity android:name=".controller.activities.PrestoActivity"
+            android:exported="false"/>
+        <activity android:name=".controller.activities.MePrestaronActivity"
+            android:exported="false"/>
+
+        <!-- Transferencias externas -->
+        <activity android:name=".controller.activities.Registro.SeleccionCuentaExternaActivity"
+            android:exported="false"/>
+        <activity android:name=".controller.activities.Registro.BuscarDestinatarioActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <!-- Facebook SDK MetaData -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token" />
+    </application>
+
+
+</manifest>

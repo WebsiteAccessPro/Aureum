@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="12dp"
+    android:background="?attr/selectableItemBackground">
+
+    <!-- Ícono -->
+    <ImageView
+        android:id="@+id/imgCuenta"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/chip"
+        android:contentDescription="Icono cuenta"/>
+
+    <!-- Nombre + tipo -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="12dp">
+
+        <TextView
+            android:id="@+id/tvNombreCuenta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BCP"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/aureum_text"/>
+
+        <TextView
+            android:id="@+id/tvTipoCuenta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Efectivo"
+            android:textSize="14sp"
+            android:textColor="@color/aureum_text"/>
+    </LinearLayout>
+
+    <!-- Botón de opciones -->
+    <ImageButton
+        android:id="@+id/btnOpciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_menu"
+        android:contentDescription="Opciones"/>
+</LinearLayout>

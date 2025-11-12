@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarCrearDeuda"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/aureum_beige"
+        android:title="Crear registro de deudas"
+        android:titleTextColor="@color/aureum_text"
+        app:navigationIcon="@drawable/ic_close_small"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Acción de deuda"
+            android:textColor="@color/aureum_text"
+            android:textSize="14sp"/>
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/spAccionDeuda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:hint="Selecciona"/>
+
+        <Space android:layout_width="match_parent" android:layout_height="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cuenta"
+            android:textColor="@color/aureum_text"
+            android:textSize="14sp"/>
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/spCuenta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:hint="Selecciona"/>
+
+        <Space android:layout_width="match_parent" android:layout_height="12dp"/>
+
+        <TextView
+            android:id="@+id/tvLabelCantidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cantidad en PEN"
+            android:textColor="@color/aureum_text"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/tvCantidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:paddingVertical="6dp"/>
+    </LinearLayout>
+
+    <GridLayout
+        android:id="@+id/keypad"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp"
+        android:columnCount="3"
+        android:rowCount="4"
+        android:background="#555555">
+
+        <!-- Teclas 1-9 -->
+        <Button android:id="@+id/btn1" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="1"/>
+        <Button android:id="@+id/btn2" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="2"/>
+        <Button android:id="@+id/btn3" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="3"/>
+        <Button android:id="@+id/btn4" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="4"/>
+        <Button android:id="@+id/btn5" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="5"/>
+        <Button android:id="@+id/btn6" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="6"/>
+        <Button android:id="@+id/btn7" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="7"/>
+        <Button android:id="@+id/btn8" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="8"/>
+        <Button android:id="@+id/btn9" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="9"/>
+        <!-- 0, punto decimal y retroceso -->
+        <Button android:id="@+id/btn0" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="0"/>
+        <Button android:id="@+id/btnDot" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="."/>
+        <ImageButton android:id="@+id/btnBackspace" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:background="@android:color/transparent" android:src="@drawable/eliminar" android:contentDescription="Borrar"/>
+    </GridLayout>
+
+</LinearLayout>

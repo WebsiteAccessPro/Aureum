@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingTop="2dp"
+    android:paddingBottom="0dp"
+    android:layout_marginBottom="0dp">
+
+    <Button
+        android:id="@+id/btn7Dias"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:backgroundTint="@color/aureum_beige"
+        android:text="7Días"
+        android:textColor="@color/black"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btn30Dias"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="30Días"
+        android:backgroundTint="@color/aureum_beige"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:layout_marginHorizontal="4dp"/>
+
+    <Button
+        android:id="@+id/btn12Semanas"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12Sem."
+        android:backgroundTint="@color/aureum_beige"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:layout_marginHorizontal="4dp"/>
+
+    <Button
+        android:id="@+id/btn6Meses"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="6Mes."
+        android:backgroundTint="@color/aureum_beige"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:layout_marginHorizontal="4dp"/>
+
+</LinearLayout>

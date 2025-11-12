@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="md_theme_primary">#FADF8A</color>
+    <color name="md_hint">#7A7A7A</color>
+    <color name="red">#FF5252</color>
+    <color name="green">#2E7D32</color>
+    <color name="aureumGold">#E6B800</color>
+    <color name="aureumGoldDark">#C79300</color>
+    <color name="aureumBg">#FAF7F2</color>
+    <color name="aureumCard">#FFFFFF</color>
+    <color name="aureumOnCard">#1F2937</color>
+    <color name="aureum_gold">#C9A45B</color>
+    <color name="aureum_gold_dark">#5B4E2D</color>
+    <color name="aureum_cream">#F5EFE6</color>
+    <color name="aureum_cream_dark">#E8DAC3</color>
+    <color name="aureum_text">#1E1E1E</color>
+    <color name="aureum_gold_20">#33C9AA66</color>
+    <color name="aureum_beige">#E8DCC5</color>
+    <color name="aureum_green">#3BB273</color>
+    <color name="aureum_red">#FF5252</color>
+
+    <!-- Colores añadidos para Material3 -->
+    <color name="md_theme_onBackground">#000000</color>
+    <color name="md_theme_onSurface">#000000</color>
+    <color name="md_theme_onSurfaceVariant">#7A7A7A</color>
+</resources>

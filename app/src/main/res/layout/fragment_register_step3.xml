@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="0dp"
+        android:paddingVertical="12dp"
+        android:gravity="center_horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFFFFF"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="14dp"
+            android:minHeight="360dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp"
+                android:gravity="center_horizontal">
+
+                <!-- ICONO DE ÉXITO -->
+                <ImageView
+                    android:id="@+id/imgSuccessIcon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:minHeight="60dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_check_circle"
+                    app:tint="#4CAF50"
+                    android:layout_marginBottom="16dp"
+                    android:contentDescription="Cuenta creada con éxito" />
+
+                <!-- TÍTULO -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¡Cuenta Creada!"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#5B4E2D"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- MENSAJE DE CONFIRMACIÓN -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tu cuenta ha sido creada correctamente.\nSerás redirigido automáticamente para iniciar sesión."
+                    android:textSize="14sp"
+                    android:textColor="#5B4E2D"
+                    android:gravity="center"
+                    android:layout_marginBottom="26dp" />
+
+                <!-- PROGRESS LOADING -->
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progressIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    app:indicatorColor="#C9AA64"
+                    android:layout_marginBottom="10dp" />
+
+                <!-- MENSAJE DE ESPERA -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Iniciando sesión..."
+                    android:textSize="13sp"
+                    android:textColor="#9E9E9E" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</ScrollView>

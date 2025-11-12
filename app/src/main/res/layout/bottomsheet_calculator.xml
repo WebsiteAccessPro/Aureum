@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardBackgroundColor="@color/aureum_cream"
+    app:strokeColor="@color/aureum_gold"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="8dp">
+
+            <ImageView
+                android:id="@+id/btnCloseCalc"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:padding="2dp"
+                android:src="@drawable/ic_close_small"
+                android:contentDescription="Cerrar" />
+        </LinearLayout>
+
+        <!-- Display -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            app:cardCornerRadius="10dp"
+            app:strokeColor="@color/aureum_gold"
+            app:strokeWidth="1dp"
+            app:cardBackgroundColor="@android:color/white">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end|center_vertical"
+                android:paddingHorizontal="16dp"
+                android:text="0"
+                android:textColor="@color/aureum_text"
+                android:maxLines="1"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="12sp"
+                app:autoSizeMaxTextSize="22sp"
+                app:autoSizeStepGranularity="1sp" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Teclado -->
+        <androidx.gridlayout.widget.GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingTop="12dp"
+            app:alignmentMode="alignMargins"
+            app:columnCount="4"
+            app:rowCount="4"
+            app:useDefaultMargins="true">
+
+            <!-- Fila 1 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn7"
+                style="@style/AureumCalcButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                android:text="7"
+                app:layout_columnWeight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn8"
+                style="@style/AureumCalcButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                android:text="8"
+                app:layout_columnWeight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn9"
+                style="@style/AureumCalcButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                android:text="9"
+                app:layout_columnWeight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBack"
+                style="@style/AureumCalcButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                android:text="←"
+                app:layout_columnWeight="1" />
+
+            <!-- Fila 2 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn4"
+                style="@style/AureumCalcButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                android:text="4"
+                app:layout_columnWeight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn5"
+                style="@style/AureumCalcButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                android:text="5"
+                app:layout_columnWeight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn6"
+                style="@style/AureumCalcButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                android:text="6"
+                app:layout_columnWeight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnClear"
+                style="@style/AureumCalcButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                android:text="C"
+                app:layout_columnWeight="1" />
+
+            <!-- Fila 3 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn1"
+                style="@style/AureumCalcButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                android:text="1"
+                app:layout_columnWeight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn2"
+                style="@style/AureumCalcButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                android:text="2"
+                app:layout_columnWeight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn3"
+                style="@style/AureumCalcButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                android:text="3"
+                app:layout_columnWeight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDot"
+                style="@style/AureumCalcButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                android:text="."
+                app:layout_columnWeight="1" />
+
+            <!-- Fila 4 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn00"
+                style="@style/AureumCalcButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                android:text="00"
+                app:layout_columnWeight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn0"
+                style="@style/AureumCalcButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                android:text="0"
+                app:layout_columnWeight="1" />
+            <!-- espacio -->
+            <!-- OK ocupa 2 columnas -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOk"
+                style="@style/AureumCalcButtonPrimary"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                android:text="OK"
+                app:layout_columnSpan="2"
+                app:layout_columnWeight="2" />
+        </androidx.gridlayout.widget.GridLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
