@@ -25,7 +25,8 @@ class SeleccionRegistroAdapter(
         val monto: Double,
         val moneda: String,
         val fechaTexto: String,
-        val tipo: String
+        val tipo: String,
+        val fechaIso: String
     )
 
     inner class VH(view: View) : RecyclerView.ViewHolder(view) {
@@ -35,10 +36,13 @@ class SeleccionRegistroAdapter(
         val tvDescripcion: TextView = view.findViewById(R.id.tvDescripcion)
         val tvMonto: TextView = view.findViewById(R.id.tvMonto)
         val tvFecha: TextView = view.findViewById(R.id.tvFecha)
+        val ctaAdd: View = view.findViewById(R.id.ctaAddRegistro)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_deuda, parent, false)
+        v.findViewById<View>(R.id.ctaAddRegistro)?.visibility = View.GONE
+        v.findViewById<View>(R.id.txtSaldo)?.visibility = View.GONE
         return VH(v)
     }
 

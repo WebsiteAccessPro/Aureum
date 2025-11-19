@@ -78,8 +78,11 @@ class EditUserActivity : AppCompatActivity() {
                 }
             }
 
-            // Ocultar el ítem de eliminar solo en esta actividad
+            // Ocultar el ítem de eliminar y otros mas
             toolbar.menu.findItem(R.id.action_delete)?.isVisible = false
+            toolbar.menu.findItem(R.id.action_forgive)?.isVisible = false
+            toolbar.menu.findItem(R.id.action_close)?.isVisible = false
+            toolbar.menu.findItem(R.id.action_edit_debt)?.isVisible = false
 
             // Géneros
             try {

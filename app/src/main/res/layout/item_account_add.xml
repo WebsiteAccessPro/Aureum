@@ -16,8 +16,8 @@
         android:gravity="center">
 
         <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@android:drawable/ic_input_add"/>
 
         <TextView
@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:text="Añadir"
             android:textColor="@color/aureum_text"
+            android:textStyle="bold"
             android:paddingTop="4dp"/>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

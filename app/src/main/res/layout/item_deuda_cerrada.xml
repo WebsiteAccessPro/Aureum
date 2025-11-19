@@ -16,7 +16,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Cabecera -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,7 +25,6 @@
             android:gravity="center_vertical"
             android:background="?attr/selectableItemBackgroundBorderless">
 
-            <!-- Icono circular -->
             <ImageView
                 android:id="@+id/imgIcono"
                 android:layout_width="42dp"
@@ -37,7 +35,6 @@
                 android:elevation="2dp"
                 android:contentDescription="@string/app_name" />
 
-            <!-- Texto principal -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -59,21 +56,10 @@
                     android:lineSpacingExtra="2dp" />
 
                 <TextView
-                    android:id="@+id/tvCuenta"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="BCP"
-                    android:textColor="@color/aureum_text"
-                    android:textSize="13sp"
-                    android:alpha="0.85"
-                    android:layout_marginTop="2dp"
-                    android:lineSpacingExtra="1dp" />
-
-                <TextView
                     android:id="@+id/tvDescripcion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Descripción o nota larga sin recorte visual para que se lea completa"
+                    android:text="Descripción"
                     android:textColor="@color/aureum_text"
                     android:textSize="12sp"
                     android:alpha="0.8"
@@ -81,7 +67,6 @@
                     android:lineSpacingExtra="1dp" />
             </LinearLayout>
 
-            <!-- Monto y fecha -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -90,11 +75,11 @@
                 android:minWidth="90dp">
 
                 <TextView
-                    android:id="@+id/tvMonto"
+                    android:id="@+id/tvPerdonado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="PEN +50.00"
-                    android:textColor="@color/aureum_green"
+                    android:text="Perdonado"
+                    android:textColor="@color/aureumOnCard"
                     android:textStyle="bold"
                     android:textSize="14.5sp"
                     android:letterSpacing="0.02"
@@ -111,15 +96,13 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Línea divisoria -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#1FA8A48A" />
 
-        <!-- Sección Añadir registro -->
         <LinearLayout
-            android:id="@+id/ctaAddRegistro"
+            android:id="@+id/ctaEliminar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_add_registro_ripple"
@@ -130,14 +113,15 @@
             <ImageView
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:src="@drawable/mas"
+                android:src="@drawable/eliminar"
                 app:tint="@color/aureum_text" />
 
             <TextView
+                android:id="@+id/tvEliminar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="AÑADIR REGISTRO"
+                android:text="Eliminar la deuda"
                 android:textStyle="bold"
                 android:textColor="@color/aureum_text"
                 android:textSize="13.5sp"

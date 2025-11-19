@@ -74,6 +74,11 @@ class EditCuentaActivity : AppCompatActivity() {
             }
         }
 
+        // Ocultar el ítem
+        toolbar.menu.findItem(R.id.action_forgive)?.isVisible = false
+        toolbar.menu.findItem(R.id.action_close)?.isVisible = false
+        toolbar.menu.findItem(R.id.action_edit_debt)?.isVisible = false
+
         // Recibir ACC_ID
         accId = intent.getStringExtra("ACC_ID")
         if (accId.isNullOrBlank()) {

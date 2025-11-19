@@ -22,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ListenerRegistration
 
@@ -50,42 +51,75 @@ class DebtsFragment : Fragment(R.layout.fragment_debts) {
     private var tmpMonto: Double = 0.0
     private var tmpFecha: java.util.Calendar = java.util.Calendar.getInstance()
     private var tmpFechaVenc: java.util.Calendar? = null
+    private var pendingDebtId: String? = null
+    private var pendingAccion: String? = null
+    private var pendingNombre: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Recyclers dinámicos insertados debajo de los card de ejemplo
-        rvPresto = RecyclerView(requireContext()).apply {
-            id = View.generateViewId()
-            layoutManager = LinearLayoutManager(requireContext())
-            isNestedScrollingEnabled = false
-        }
-        rvMePrestaron = RecyclerView(requireContext()).apply {
-            id = View.generateViewId()
-            layoutManager = LinearLayoutManager(requireContext())
-            isNestedScrollingEnabled = false
+        view.findViewById<TextView>(R.id.tabActivo)?.setOnClickListener { }
+        view.findViewById<TextView>(R.id.tabCerrado)?.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, DebtsClosedFragment(), "DEBTS_CLOSED")
+                .commit()
         }
 
-        // Contenedor principal del ScrollView
-        val container = view.findViewById<LinearLayout>(R.id.contentDebts)
-        container?.let { ll ->
-            // Insertar RV de "Prestó" justo después del botón inline
-            val idxBtnPrest = (0 until ll.childCount).indexOfFirst { ll.getChildAt(it).id == R.id.ctaAddPresto }
-            if (idxBtnPrest != -1) ll.addView(rvPresto, idxBtnPrest + 1)
-
-            // Insertar RV de "Me prestaron" justo después del botón inline
-            val idxBtnMePrest = (0 until ll.childCount).indexOfFirst { ll.getChildAt(it).id == R.id.ctaAddMePrestaron }
-            if (idxBtnMePrest != -1) ll.addView(rvMePrestaron, idxBtnMePrest + 1)
+        view.findViewById<android.widget.ImageView>(R.id.btnBuscarDeuda)?.setOnClickListener {
+            val i = Intent(requireContext(), com.example.aureum1.controller.activities.DebtSearchActivity::class.java)
+            i.putExtra(com.example.aureum1.controller.activities.DebtSearchActivity.EXTRA_SOURCE, "activo")
+            startActivity(i)
         }
 
-        adapterPresto = DebtAdapter(emptyList())
-        adapterMePrestaron = DebtAdapter(emptyList())
+        rvPresto = view.findViewById(R.id.rvDeudasPresto)
+        rvMePrestaron = view.findViewById(R.id.rvDeudasMePrestaron)
+        val tvEmptyPresto = view.findViewById<TextView>(R.id.tvEmptyPresto)
+        val tvEmptyMePrestaron = view.findViewById<TextView>(R.id.tvEmptyMePrestaron)
+        rvPresto.layoutManager = LinearLayoutManager(requireContext())
+        rvMePrestaron.layoutManager = LinearLayoutManager(requireContext())
+        rvPresto.setHasFixedSize(false)
+        rvMePrestaron.setHasFixedSize(false)
+        rvPresto.isNestedScrollingEnabled = false
+        rvMePrestaron.isNestedScrollingEnabled = false
+
+        adapterPresto = DebtAdapter(emptyList(), emptyMap(), "presto", onAddRegistroClick = { acc, item ->
+            val nombre = (item["nombrePresto"] as? String)
+                ?: (item["nombre"] as? String)
+                ?: ""
+            val debtId = (item["_id"] as? String).orEmpty()
+            mostrarModalOpciones(acc, nombre, debtId)
+        }, onItemClick = { acc, item ->
+            val nombre = (item["nombrePresto"] as? String)
+                ?: (item["nombre"] as? String)
+                ?: ""
+            val i = Intent(requireContext(), com.example.aureum1.controller.activities.RegistrosDeudaActivity::class.java)
+            i.putExtra("ACCION", acc)
+            i.putExtra("DEBT_ID", (item["_id"] as? String).orEmpty())
+            i.putExtra("NOMBRE", nombre)
+            i.putExtra("SOURCE", "activo")
+            startActivity(i)
+        })
+        adapterMePrestaron = DebtAdapter(emptyList(), emptyMap(), "me_prestaron", onAddRegistroClick = { acc, item ->
+            val nombre = (item["nombreMeprestaron"] as? String)
+                ?: (item["nombre"] as? String)
+                ?: ""
+            val debtId = (item["_id"] as? String).orEmpty()
+            mostrarModalOpciones(acc, nombre, debtId)
+        }, onItemClick = { acc, item ->
+            val nombre = (item["nombreMeprestaron"] as? String)
+                ?: (item["nombre"] as? String)
+                ?: ""
+            val i = Intent(requireContext(), com.example.aureum1.controller.activities.RegistrosDeudaActivity::class.java)
+            i.putExtra("ACCION", acc)
+            i.putExtra("DEBT_ID", (item["_id"] as? String).orEmpty())
+            i.putExtra("NOMBRE", nombre)
+            i.putExtra("SOURCE", "activo")
+            startActivity(i)
+        })
         rvPresto.adapter = adapterPresto
         rvMePrestaron.adapter = adapterMePrestaron
 
-        // Clicks de las barras -> abre modal con opciones
-        view.findViewById<View>(R.id.ctaAddPresto)?.setOnClickListener { mostrarModalOpciones("presto") }
-        view.findViewById<View>(R.id.ctaAddMePrestaron)?.setOnClickListener { mostrarModalOpciones("me_prestaron") }
+
 
         // Botones secundarios (ocultos/mostrados por el FAB): abren flujo wallet_select_record
         view.findViewById<MaterialButton>(R.id.btnPresto)?.setOnClickListener {
@@ -119,24 +153,36 @@ class DebtsFragment : Fragment(R.layout.fragment_debts) {
         listenerMePrestaron?.remove()
         listenerPresto = repo.subscribeByAction(uid, "presto") { lista ->
             adapterPresto.submitList(lista)
+            tvEmptyPresto?.visibility = if (lista.isEmpty()) View.VISIBLE else View.GONE
         }
         listenerMePrestaron = repo.subscribeByAction(uid, "me_prestaron") { lista ->
             adapterMePrestaron.submitList(lista)
+            tvEmptyMePrestaron?.visibility = if (lista.isEmpty()) View.VISIBLE else View.GONE
         }
     }
 
-    private fun mostrarModalOpciones(defaultAccion: String) {
+    private fun mostrarModalOpciones(defaultAccion: String, defaultNombre: String?, debtId: String) {
         val sheet = BottomSheetDialog(requireContext())
         val v = layoutInflater.inflate(R.layout.bottomsheet_debt_add_options, null)
         sheet.setContentView(v)
+        pendingDebtId = debtId
+        pendingAccion = defaultAccion
+        pendingNombre = defaultNombre
         v.findViewById<View>(R.id.opSeleccionarRegistro).setOnClickListener {
             sheet.dismiss()
-            startActivityForResult(Intent(requireContext(), com.example.aureum1.controller.activities.SeleccionRegistroDeudaActivity::class.java), REQ_SELECCION_REGISTRO)
+            val i = Intent(requireContext(), com.example.aureum1.controller.activities.SeleccionRegistroDeudaActivity::class.java)
+            i.putExtra("DEFAULT_ACCION", defaultAccion)
+            i.putExtra("FILTER_SOURCE", "debt_card")
+            startActivityForResult(i, REQ_SELECCION_REGISTRO)
         }
         v.findViewById<View>(R.id.opCrearNuevoRegistro).setOnClickListener {
             sheet.dismiss()
             val i = Intent(requireContext(), com.example.aureum1.controller.activities.CrearDeudaActivity::class.java)
             i.putExtra("DEFAULT_ACCION", defaultAccion)
+            i.putExtra("DEBT_ID", debtId)
+            if (!defaultNombre.isNullOrBlank()) {
+                i.putExtra("DEFAULT_NOMBRE", defaultNombre)
+            }
             startActivity(i)
         }
         v.findViewById<View>(R.id.btnCancelarModal).setOnClickListener { sheet.dismiss() }
@@ -286,23 +332,53 @@ class DebtsFragment : Fragment(R.layout.fragment_debts) {
             val tipo = data.getStringExtra("SELECTED_RECORD_TIPO").orEmpty()
             val cuenta = data.getStringExtra("SELECTED_RECORD_CUENTA").orEmpty()
             val monto = data.getDoubleExtra("SELECTED_RECORD_MONTO", 0.0)
-            val moneda = data.getStringExtra("SELECTED_RECORD_MONEDA").orEmpty()
-            val accion = if (tipo.equals("Ingreso", true)) "presto" else "me_prestaron"
-
-            repo.addDebt(uid, mapOf(
-                "accion" to accion,
-                "cuenta" to cuenta,
-                "moneda" to (if (moneda.isNotBlank()) moneda else (accountsInfoByName[cuenta]?.get("moneda") ?: "PEN")),
-                "monto" to monto,
-                "fecha" to System.currentTimeMillis(),
-                "estado" to "activo",
-                "from" to "record",
-                "recordId" to recordId
-            )) { success, error ->
-                if (!success) {
-                    android.widget.Toast.makeText(requireContext(), error ?: "Error al guardar la deuda", android.widget.Toast.LENGTH_SHORT).show()
-                }
+            val monedaSel = data.getStringExtra("SELECTED_RECORD_MONEDA").orEmpty()
+            val mon = if (monedaSel.isNotBlank()) monedaSel else (accountsInfoByName[cuenta]?.get("moneda") ?: "PEN") as String
+            val accion = pendingAccion ?: return
+            val debtId = pendingDebtId ?: return
+            val nombre = pendingNombre ?: ""
+            val esIngreso = tipo.equals("Ingreso", true)
+            val esAumento = (accion == "presto" && !esIngreso) || (accion == "me_prestaron" && esIngreso)
+            val operacion = if (esAumento) "aumento" else "reembolso"
+            val signo = if (esAumento) "-" else "+"
+            val tipoMov = if (esAumento) "Préstamos, interés" else "Préstamos, alquileres"
+            val direccion = when {
+                accion == "presto" && !esAumento -> "Yo → $nombre"
+                accion == "presto" && esAumento -> "$nombre → Yo"
+                accion == "me_prestaron" && !esAumento -> "Yo → $nombre"
+                else -> "$nombre → Yo"
             }
+            val db = FirebaseFirestore.getInstance()
+            db.collection("accounts").document(uid)
+                .collection("deudas").document(accion)
+                .collection("items").document(debtId)
+                .get()
+                .addOnSuccessListener { debtDoc ->
+                    val monedaCard = (debtDoc.getString("moneda") ?: "PEN")
+                    val montoConv = convertirMoneda(monto, mon, monedaCard)
+                    val delta = when (accion) {
+                        "presto" -> if (esAumento) montoConv else -montoConv
+                        else -> if (esAumento) montoConv else -montoConv
+                    }
+                    val movement = mapOf(
+                "recordId" to recordId,
+                "movimiento_operacion" to operacion,
+                "movimiento_tipo" to tipoMov,
+                "movimiento_signo" to signo,
+                "movimiento_direccion" to direccion,
+                "cuenta" to cuenta,
+                "moneda" to mon,
+                "monto" to monto,
+                "fecha" to com.google.firebase.Timestamp.now()
+                    )
+                    repo.addMovementToDebt(uid, accion, debtId, movement, delta) { success, error ->
+                        if (!success) {
+                            android.widget.Toast.makeText(requireContext(), error ?: "Error al aplicar registro", android.widget.Toast.LENGTH_SHORT).show()
+                        } else {
+                            repo.setRecordLinked(uid, recordId, true, accion, debtId)
+                        }
+                    }
+                }
         }
     }
 
@@ -310,5 +386,21 @@ class DebtsFragment : Fragment(R.layout.fragment_debts) {
         listenerPresto?.remove(); listenerPresto = null
         listenerMePrestaron?.remove(); listenerMePrestaron = null
         super.onDestroyView()
+    }
+
+    private fun convertirMoneda(monto: Double, origen: String, destino: String): Double {
+        if (origen.equals(destino, true)) return monto
+        val usdToPen = 3.8
+        val eurToPen = 4.1
+        val montoEnPen = when (origen.uppercase()) {
+            "USD" -> monto * usdToPen
+            "EUR" -> monto * eurToPen
+            else -> monto
+        }
+        return when (destino.uppercase()) {
+            "USD" -> montoEnPen / usdToPen
+            "EUR" -> montoEnPen / eurToPen
+            else -> montoEnPen
+        }
     }
 }

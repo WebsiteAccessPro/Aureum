@@ -7,6 +7,18 @@
         android:icon="@drawable/eliminar"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/action_forgive"
+        android:title="Perdonar deuda"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_close"
+        android:title="Cerrar deuda"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_edit_debt"
+        android:title="Editar deuda"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_save"
         android:title="Guardar"
         android:icon="@drawable/ic_check"

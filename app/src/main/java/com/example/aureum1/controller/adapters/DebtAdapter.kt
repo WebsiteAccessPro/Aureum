@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aureum1.R
+import com.example.aureum1.model.DateUtils
+import com.google.firebase.Timestamp
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -21,22 +23,25 @@ import java.util.Locale
  *  - txtFecha: fecha
  */
 class DebtAdapter(
-    private var items: List<Map<String, Any?>>, // deudas crudas desde Firestore
-    private var accountsInfo: Map<String, Map<String, Any?>> = emptyMap()
+    private var items: List<Map<String, Any?>>, 
+    private var accountsInfo: Map<String, Map<String, Any?>> = emptyMap(),
+    private val accionFija: String,
+    private val onAddRegistroClick: ((String, Map<String, Any?>) -> Unit)? = null,
+    private val onItemClick: ((String, Map<String, Any?>) -> Unit)? = null
 ) : RecyclerView.Adapter<DebtAdapter.VH>() {
 
     inner class VH(view: View) : RecyclerView.ViewHolder(view) {
-        val imgCategoria: ImageView = view.findViewById(R.id.imgCategoria)
-        val txtCategoriaTitulo: TextView = view.findViewById(R.id.txtCategoriaTitulo)
-        val txtCuenta: TextView = view.findViewById(R.id.txtCuenta)
-        val txtNota: TextView = view.findViewById(R.id.txtNota)
-        val txtMoneda: TextView = view.findViewById(R.id.txtMoneda)
-        val txtMonto: TextView = view.findViewById(R.id.txtMonto)
-        val txtFecha: TextView = view.findViewById(R.id.txtFecha)
+        val imgIcono: ImageView = view.findViewById(R.id.imgIcono)
+        val tvTituloDeuda: TextView = view.findViewById(R.id.tvTituloDeuda)
+        val tvCuenta: TextView = view.findViewById(R.id.tvCuenta)
+        val tvDescripcion: TextView = view.findViewById(R.id.tvDescripcion)
+        val tvMonto: TextView = view.findViewById(R.id.tvMonto)
+        val tvFecha: TextView = view.findViewById(R.id.tvFecha)
+        val ctaAdd: View = view.findViewById(R.id.ctaAddRegistro)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_registro, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_deuda, parent, false)
         return VH(v)
     }
 
@@ -44,34 +49,64 @@ class DebtAdapter(
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val item = items[position]
-        val nombre = (item["nombre"] as? String).orEmpty()
+        val accion = (item["accion"] as? String).orEmpty().ifBlank { accionFija }
+        val nombre = when (accion) {
+            "presto" -> (item["nombrePresto"] as? String).orEmpty()
+            "me_prestaron" -> (item["nombreMeprestaron"] as? String).orEmpty()
+            else -> (item["nombre"] as? String).orEmpty()
+        }
         val cuenta = (item["cuenta"] as? String).orEmpty()
         val descripcion = (item["descripcion"] as? String).orEmpty()
         val monto = (item["monto"] as? Number)?.toDouble() ?: 0.0
         val monedaRegistro = (item["moneda"] as? String)
-        val fecha = (item["fecha"] as? String).orEmpty()
-        val accion = (item["accion"] as? String).orEmpty()
+        val fechaTs = item["fecha"] as? Timestamp
 
-        holder.txtCategoriaTitulo.text = nombre.ifBlank { "Deuda" }
-        holder.txtCuenta.text = cuenta
-        holder.txtNota.text = if (descripcion.isNotBlank()) "\"$descripcion\"" else ""
+        val titulo = if (accion == "presto") {
+            val base = if (nombre.isBlank()) "****" else nombre
+            "$base ME DEBE"
+        } else {
+            val base = if (nombre.isBlank()) "****" else nombre
+            "DEBO $base"
+        }
+        holder.tvTituloDeuda.text = titulo
+        holder.tvCuenta.text = cuenta
+        holder.tvDescripcion.text = if (descripcion.isNotBlank()) "\"$descripcion\"" else ""
 
         val monedaFinal = monedaRegistro ?: (accountsInfo[cuenta]?.get("moneda") as? String) ?: "PEN"
         val nf = NumberFormat.getNumberInstance(Locale.getDefault()).apply {
             minimumFractionDigits = 2
             maximumFractionDigits = 2
         }
+        val base = "PEN"
+        val montoBase = convertirMoneda(monto, monedaFinal, base)
         val sign = if (accion == "presto") "+" else "-"
-        holder.txtMoneda.text = monedaFinal
-        holder.txtMonto.text = "${sign}${nf.format(monto)}"
+        holder.tvMonto.text = "$base ${sign}${nf.format(montoBase)}"
 
-        val colorRes = if (accion == "presto") R.color.aureum_green else R.color.red
+        val colorRes = if (accion == "presto") R.color.aureum_green else R.color.aureum_red
         val color = ContextCompat.getColor(holder.itemView.context, colorRes)
-        holder.txtMonto.setTextColor(color)
-        holder.txtMoneda.setTextColor(color)
+        holder.tvMonto.setTextColor(color)
 
-        holder.txtFecha.text = fecha
-        holder.imgCategoria.setImageResource(R.drawable.ic_user)
+        val fechaLabel = DateUtils.relativeDate("", fechaTs)
+        holder.tvFecha.text = fechaLabel
+        holder.imgIcono.setImageResource(R.drawable.ic_user)
+        holder.ctaAdd.setOnClickListener { onAddRegistroClick?.invoke(accionFija, item) }
+        holder.itemView.setOnClickListener { onItemClick?.invoke(accionFija, item) }
+    }
+
+    private fun convertirMoneda(monto: Double, origen: String, destino: String): Double {
+        if (origen.equals(destino, true)) return monto
+        val usdToPen = 3.8
+        val eurToPen = 4.1
+        val montoEnPen = when (origen.uppercase()) {
+            "USD" -> monto * usdToPen
+            "EUR" -> monto * eurToPen
+            else -> monto
+        }
+        return when (destino.uppercase()) {
+            "USD" -> montoEnPen / usdToPen
+            "EUR" -> montoEnPen / eurToPen
+            else -> montoEnPen
+        }
     }
 
     fun submitList(newItems: List<Map<String, Any?>>) {

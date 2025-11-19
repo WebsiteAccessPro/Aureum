@@ -17,6 +17,7 @@
     <string name="link">Vincular</string>
     <string name="password_required">Debes ingresar tu contraseña.</string>
 
+    <string name="menu_home">Inicio</string>
     <string name="menu_settings">Ajustes</string>
 
     <string-array name="opciones_tiempo">

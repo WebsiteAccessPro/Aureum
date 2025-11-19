@@ -38,10 +38,13 @@ class MainActivity : AppCompatActivity() {
     private var locationCallback: com.google.android.gms.location.LocationCallback? = null
     private var locationOverlay: android.view.View? = null
     private var inicioCargado = false
+    private var startTab: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        startTab = intent?.getStringExtra("START_TAB")
 
         val user = auth.currentUser
         if (user == null) {
@@ -59,12 +62,20 @@ class MainActivity : AppCompatActivity() {
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.action_home -> {
+                R.id.nav_home -> {
                     openFragment(AccountsFragment(), "ACCOUNTS")
                     true
                 }
                 else -> false
             }
+        }
+
+        //Home como ImageView
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            openFragment(AccountsFragment(), "ACCOUNTS")
+
+            val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
+            bottomNav.selectedItemId = R.id.nav_home
         }
 
         // Avatar → cerrar sesión
@@ -125,6 +136,12 @@ class MainActivity : AppCompatActivity() {
 
         // NUEVO BLOQUE: obtener país y cambiar bandera
         fused = LocationServices.getFusedLocationProviderClient(this)
+
+        val container = findViewById<android.widget.FrameLayout>(R.id.fragmentContainer)
+        val bottom = findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottomNav)
+        bottom.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            container.setPadding(container.paddingLeft, container.paddingTop, container.paddingRight, bottom.height)
+        }
         highAccReq = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 2000L).build()
         settingsRequest = LocationSettingsRequest.Builder().addLocationRequest(highAccReq).setAlwaysShow(true).build()
         val settingsClient: SettingsClient = LocationServices.getSettingsClient(this)
@@ -280,8 +297,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun abrirInicioSiNecesario() {
         if (!inicioCargado) {
-            openFragment(AccountsFragment(), "ACCOUNTS")
-            findViewById<BottomNavigationView>(R.id.bottomNav).selectedItemId = R.id.nav_home
+            val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
+            if (startTab == "DEBTS") {
+                openFragment(DebtsFragment(), "DEBTS")
+                bottomNav.selectedItemId = R.id.nav_debts
+            } else {
+                openFragment(AccountsFragment(), "ACCOUNTS")
+                bottomNav.selectedItemId = R.id.nav_home
+            }
             inicioCargado = true
         }
     }

@@ -47,7 +47,15 @@ class AccountAdapter(
             tvNombre.text = acc.nombre
             tvNumero.text = acc.numero
             tvValor.text  = String.Companion.format(Locale.getDefault(), "%s %,.2f", acc.moneda, acc.valor)
-            itemView.setOnClickListener { onAccountClick(acc) }
+            val card = itemView as com.google.android.material.card.MaterialCardView
+            val isSelected = selectedName?.equals(acc.nombre, true) == true
+            card.strokeColor = itemView.resources.getColor(if (isSelected) R.color.aureum_gold else android.R.color.transparent, null)
+            card.strokeWidth = if (isSelected) 3 else 1
+            itemView.setOnClickListener {
+                selectedName = acc.nombre
+                notifyDataSetChanged()
+                onAccountClick(acc)
+            }
         }
     }
 
@@ -59,4 +67,10 @@ class AccountAdapter(
         items = newItems
         notifyDataSetChanged()
     }
+
+    fun setSelected(name: String?) {
+        selectedName = name
+        notifyDataSetChanged()
+    }
 }
+    private var selectedName: String? = null

@@ -1,67 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="@color/aureum_beige">
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="5dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/aureum_cream_dark"
+    app:cardBackgroundColor="@color/aureum_cream">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="14dp"
+        android:gravity="center_vertical"
+        android:background="?attr/selectableItemBackgroundBorderless">
 
+        <!-- Ícono principal -->
         <ImageView
             android:id="@+id/imgCategoria"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:src="@drawable/ic_home"
-            android:background="@drawable/circle_background_dorado"
-            android:padding="8dp" />
+            android:background="@drawable/bg_circle_beige"
+            android:padding="8dp"
+            android:elevation="2dp"
+            android:contentDescription="@string/app_name" />
 
+        <!-- Texto de la categoría -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
             android:orientation="vertical"
-            android:layout_marginStart="10dp">
+            android:paddingVertical="2dp">
 
             <TextView
                 android:id="@+id/txtCategoriaTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Categoría ejemplo con nombre largo"
                 android:textStyle="bold"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/aureumOnCard"
+                android:textSize="15sp"
+                android:letterSpacing="0.02"
+                android:lineSpacingExtra="2dp" />
 
             <TextView
                 android:id="@+id/txtCuenta"
-                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="BCP"
+                android:textColor="@color/aureum_text"
                 android:textSize="13sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:alpha="0.85"
+                android:lineSpacingExtra="1dp"
+                android:layout_marginTop="2dp" />
 
             <TextView
                 android:id="@+id/txtNota"
-                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nota opcional con detalles adicionales sin recorte de texto"
+                android:textColor="@color/aureum_text"
                 android:textSize="12sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:alpha="0.75"
+                android:layout_marginTop="2dp"
+                android:lineSpacingExtra="1dp" />
         </LinearLayout>
 
+        <!-- Sección derecha (monto y fecha) -->
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:gravity="end">
+            android:gravity="end|center_vertical"
+            android:minWidth="85dp">
 
-            <!-- Fila superior: moneda primero y luego monto, ambos alineados a la derecha -->
+            <!-- Monto y moneda -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp">
 
                 <TextView
                     android:id="@+id/txtMoneda"
@@ -69,41 +95,46 @@
                     android:layout_height="wrap_content"
                     android:text="PEN"
                     android:textStyle="bold"
-                    android:textSize="13sp"
-                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textColor="@color/aureum_gold_dark"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/txtMonto"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/txtMonto" />
 
                 <TextView
                     android:id="@+id/txtMonto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="+50.00"
                     android:textColor="@color/aureum_green"
                     android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:layout_marginStart="6dp"
+                    android:textSize="15sp"
+                    android:layout_marginStart="4dp"
+                    android:letterSpacing="0.03"
                     app:layout_constraintStart_toEndOf="@id/txtMoneda"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/txtSaldo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+150.00 saldo"
                 android:textColor="@color/aureum_green"
                 android:textSize="12sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:alpha="0.9"
+                android:letterSpacing="0.02"
+                android:layout_marginBottom="2dp" />
 
             <TextView
                 android:id="@+id/txtFecha"
-                android:textColor="@color/black"
-                android:textSize="12sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="12 nov 2025"
+                android:textColor="@color/aureum_text"
+                android:textSize="12sp"
+                android:alpha="0.7" />
         </LinearLayout>
     </LinearLayout>
-
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

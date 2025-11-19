@@ -70,7 +70,7 @@
                     android:id="@+id/tvResumenMonto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="S/. PEN 100.00"
+                    android:text="S/. PEN 00.00"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="14sp" />
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="SEMANA 41"
+                android:text="SEMANA -"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="13sp" />
@@ -97,7 +97,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Saldo PEN 260.00"
+                    android:text="Saldo PEN 00.00"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
 
@@ -105,7 +105,7 @@
                     android:id="@+id/tvSaldoSemanaActual"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="PEN 50.00"
+                    android:text="PEN 00.00"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="13sp" />

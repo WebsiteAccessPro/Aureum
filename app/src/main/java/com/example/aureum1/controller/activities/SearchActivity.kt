@@ -21,6 +21,7 @@ import com.example.aureum1.model.repository.AccountRepository
 import com.example.aureum1.model.repository.RecordRepository
 import java.text.Normalizer
 
+//Buscar para la seccion registro
 class SearchActivity : AppCompatActivity() {
     private val auth by lazy { FirebaseAuth.getInstance() }
     // Repositorios MVC

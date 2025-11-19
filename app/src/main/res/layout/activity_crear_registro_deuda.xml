@@ -55,7 +55,7 @@
             android:id="@+id/tvLabelCantidad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cantidad en PEN"
+            android:text="Cantidad"
             android:textColor="@color/aureum_text"
             android:textSize="14sp"/>
         <TextView
@@ -66,6 +66,15 @@
             android:textStyle="bold"
             android:textSize="22sp"
             android:paddingVertical="6dp"/>
+        <TextView
+            android:id="@+id/tvPlaceholderAccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/aureum_text"
+            android:alpha="0.7"
+            android:textSize="13sp"
+            android:paddingBottom="4dp"/>
     </LinearLayout>
 
     <GridLayout

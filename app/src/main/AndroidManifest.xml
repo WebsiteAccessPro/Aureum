@@ -81,6 +81,11 @@
             android:name=".controller.activities.SearchActivity"
             android:exported="false" />
 
+        <!-- DebtSearchActivity -->
+        <activity
+            android:name=".controller.activities.DebtSearchActivity"
+            android:exported="false" />
+
         <!-- Full list Activity -->
         <activity
             android:name=".controller.activities.FullRecordListActivity"
@@ -102,6 +107,10 @@
         <activity android:name=".controller.activities.SeleccionRegistroDeudaActivity"
             android:exported="false"/>
         <activity android:name=".controller.activities.CrearDeudaActivity"
+            android:exported="false"/>
+        <activity android:name=".controller.activities.EditDeudaActivity"
+            android:exported="false"/>
+        <activity android:name=".controller.activities.RegistrosDeudaActivity"
             android:exported="false"/>
         <activity android:name=".controller.activities.WalletSelectRecordActivity"
             android:exported="false"/>

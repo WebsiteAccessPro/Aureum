@@ -33,6 +33,8 @@ class WalletSelectRecordActivity : AppCompatActivity() {
 
         btnSeleccionar.setOnClickListener {
             val i = Intent(this, SeleccionRegistroDeudaActivity::class.java)
+            i.putExtra(EXTRA_DEFAULT_ACCION, defaultAccion)
+            i.putExtra("FILTER_SOURCE", "wallet")
             startActivityForResult(i, REQ_SELECCION_REGISTRO_FORWARD)
         }
 
@@ -50,7 +52,19 @@ class WalletSelectRecordActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQ_SELECCION_REGISTRO_FORWARD && resultCode == Activity.RESULT_OK && data != null) {
-            setResult(Activity.RESULT_OK, data)
+            val cuenta = data.getStringExtra("SELECTED_RECORD_CUENTA").orEmpty()
+            val moneda = data.getStringExtra("SELECTED_RECORD_MONEDA").orEmpty()
+            val monto = data.getDoubleExtra("SELECTED_RECORD_MONTO", 0.0)
+            val tipo  = data.getStringExtra("SELECTED_RECORD_TIPO").orEmpty()
+            val fechaTxt = data.getStringExtra("SELECTED_RECORD_FECHA_TEXTO").orEmpty()
+
+            val i = if (defaultAccion == "presto") Intent(this, PrestoActivity::class.java) else Intent(this, MePrestaronActivity::class.java)
+            i.putExtra("PREFILL_CUENTA", cuenta)
+            i.putExtra("PREFILL_MONEDA", moneda)
+            i.putExtra("PREFILL_MONTO", monto)
+            val fechaIso = data.getStringExtra("SELECTED_RECORD_FECHA_ISO").orEmpty()
+            i.putExtra("PREFILL_FECHA_ISO", fechaIso)
+            startActivity(i)
             finish()
         }
     }
