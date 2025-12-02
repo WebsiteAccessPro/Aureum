@@ -6,46 +6,53 @@
     android:layout_height="match_parent"
     android:background="@color/aureum_cream">
 
-    <!-- 🔸 AppBar -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#C9AA66"
-        android:elevation="4dp">
+        android:background="@color/aureum_gold"
+        android:elevation="4dp"
+        app:liftOnScroll="false"
+        android:stateListAnimator="@null">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbarAjustesCuenta"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:paddingHorizontal="8dp"
-            app:navigationIcon="@drawable/flechaizquierda2"
+            android:paddingHorizontal="12dp"
+            app:navigationIcon="@drawable/ic_close_small"
             app:title="Ajustes de Cuentas"
             app:titleCentered="true"
-            app:titleTextColor="@color/aureum_text" />
+            app:titleTextColor="@color/aureum_text"
+            app:titleTextAppearance="@style/ToolbarTitleSmall" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- 🔸 Lista de cuentas -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerCuentas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:padding="8dp"
-        android:clipToPadding="false"/>
+        android:layout_marginTop="0dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="12dp"
+        android:background="@color/aureum_cream"
+        android:paddingBottom="12dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <!-- 🔸 Botón flotante para añadir -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabNuevaCuenta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:textColor="@color/aureum_text"
         android:contentDescription="Añadir cuenta"
-        android:tint="@color/aureum_text"
+        app:icon="@drawable/ic_add_plus"
+        app:iconTint="@color/aureum_text"
         app:backgroundTint="@color/aureum_gold"
         app:layout_anchor="@id/recyclerCuentas"
-        app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/mas" />
+        app:layout_anchorGravity="bottom|end" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:paddingTop="12dp"
-    android:paddingBottom="16dp">
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnVerMasInline"
@@ -16,7 +16,7 @@
         android:text="Ver más"
         android:textAllCaps="false"
         android:textStyle="bold"
-        android:paddingHorizontal="24dp"
+        android:paddingHorizontal="40dp"
         android:paddingVertical="8dp"
         android:elevation="4dp"
         app:cornerRadius="24dp"

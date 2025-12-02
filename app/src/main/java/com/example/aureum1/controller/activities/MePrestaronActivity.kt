@@ -10,6 +10,7 @@ import com.example.aureum1.model.repository.DebtRepository
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
@@ -30,6 +31,12 @@ class MePrestaronActivity : AppCompatActivity() {
     private lateinit var spCuenta: MaterialAutoCompleteTextView
     private lateinit var spFecha: MaterialAutoCompleteTextView
     private lateinit var spFechaVenc: MaterialAutoCompleteTextView
+
+    private lateinit var tilNombre: TextInputLayout
+    private lateinit var tilCuenta: TextInputLayout
+    private lateinit var tilCantidad: TextInputLayout
+    private lateinit var tilFecha: TextInputLayout
+    private lateinit var tilVenc: TextInputLayout
 
     private var cuentas: List<String> = emptyList()
     private var monedaPorCuenta: Map<String, String> = emptyMap()
@@ -57,6 +64,12 @@ class MePrestaronActivity : AppCompatActivity() {
         spCuenta = findViewById(R.id.spCuenta)
         spFecha = findViewById(R.id.spFecha)
         spFechaVenc = findViewById(R.id.spFechaVencimiento)
+
+        tilNombre = findViewById(R.id.tilNombreMP)
+        tilCuenta = findViewById(R.id.tilCuentaMP)
+        tilCantidad = findViewById(R.id.tilCantidadMP)
+        tilFecha = findViewById(R.id.tilFechaMP)
+        tilVenc = findViewById(R.id.tilVencMP)
 
         configurarCuenta()
         configurarCantidad()
@@ -125,6 +138,8 @@ class MePrestaronActivity : AppCompatActivity() {
         val cal = java.util.Calendar.getInstance()
         spFecha.setOnClickListener { mostrarDatePicker(false, cal) }
         spFechaVenc.setOnClickListener { mostrarDatePicker(true, cal) }
+        tilFecha.setEndIconOnClickListener { mostrarDatePicker(false, cal) }
+        tilVenc.setEndIconOnClickListener { mostrarDatePicker(true, cal) }
     }
 
     private fun mostrarDatePicker(venc: Boolean, base: java.util.Calendar) {
@@ -192,15 +207,42 @@ class MePrestaronActivity : AppCompatActivity() {
         val descripcion = etDescripcion.text?.toString()?.trim() ?: ""
         val moneda = monedaPorCuenta[cuenta] ?: "PEN"
 
-        if (cuenta.isBlank() || monto <= 0.0) {
-            Toast.makeText(this, "Complete todos los campos correctamente", Toast.LENGTH_SHORT).show()
+        // limpiar errores visuales
+        tilNombre.error = null; tilNombre.isErrorEnabled = false
+        tilCuenta.error = null; tilCuenta.isErrorEnabled = false
+        tilCantidad.error = null; tilCantidad.isErrorEnabled = false
+        tilFecha.error = null; tilFecha.isErrorEnabled = false
+        tilVenc.error = null; tilVenc.isErrorEnabled = false
+
+        // validaciones sin espacios extra
+        if (nombre.isBlank()) {
+            tilNombre.isErrorEnabled = true
+            tilNombre.error = "Ingrese un nombre"
+            return
+        }
+        if (cuenta.isBlank()) {
+            tilCuenta.isErrorEnabled = true
+            tilCuenta.error = "Seleccione una cuenta"
+            return
+        }
+        if (monto <= 0.0) {
+            tilCantidad.isErrorEnabled = true
+            tilCantidad.error = "Monto mayor a 0"
+            return
+        }
+        val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+        val fechaTs = try { Timestamp(sdf.parse(fechaSel) ?: java.util.Date()) } catch (_: Exception) {
+            tilFecha.isErrorEnabled = true
+            tilFecha.error = "Formato inválido (yyyy-MM-dd)"
+            return
+        }
+        val fechaVTs = try { Timestamp(sdf.parse(fechaVSel) ?: java.util.Date()) } catch (_: Exception) {
+            tilVenc.isErrorEnabled = true
+            tilVenc.error = "Formato inválido (yyyy-MM-dd)"
             return
         }
 
         val accion = "me_prestaron"
-        val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
-        val fechaTs = try { Timestamp(sdf.parse(fechaSel) ?: java.util.Date()) } catch (_: Exception) { Timestamp(java.util.Date()) }
-        val fechaVTs = try { Timestamp(sdf.parse(fechaVSel) ?: java.util.Date()) } catch (_: Exception) { Timestamp(java.util.Date()) }
 
         debtRepo.addDebtNested(uid, accion, mapOf(
             "cuenta" to cuenta,

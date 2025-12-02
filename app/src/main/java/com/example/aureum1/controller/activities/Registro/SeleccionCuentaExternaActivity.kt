@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.aureum1.R
 import com.example.aureum1.controller.adapters.CuentaAdapter
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -24,7 +24,7 @@ class SeleccionCuentaExternaActivity : AppCompatActivity() {
     private lateinit var rv: RecyclerView
     private lateinit var adapter: CuentaAdapter
     private val cuentas = mutableListOf<Map<String, Any?>>()
-    private lateinit var fabOtroUsuario: FloatingActionButton
+    private lateinit var fabOtroUsuario: ExtendedFloatingActionButton
 
     private val auth by lazy { FirebaseAuth.getInstance() }
     private val db by lazy { FirebaseFirestore.getInstance() }

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/aureum_cream">
 
     <TextView
         android:id="@+id/tvTituloModal"
@@ -21,27 +22,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="6dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="2dp"
-        app:cardBackgroundColor="@color/aureum_beige">
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="3dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/aureum_beige"
+        app:cardBackgroundColor="@color/aureumCard">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:padding="14dp"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_check_circle"
+                android:background="@drawable/bg_circle_beige"
+                android:padding="8dp"
+                android:contentDescription="Seleccionar registro" />
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Seleccionar registro"
-                android:textStyle="bold"
-                android:textColor="@color/aureum_text"
-                android:textSize="15sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="para elegir un registro existente para enlazarlo a la deuda"
-                android:textColor="@color/aureum_text"
-                android:textSize="13sp"/>
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Seleccionar registro"
+                    android:textStyle="bold"
+                    android:textColor="@color/aureum_text"
+                    android:textSize="15sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Elegir un registro existente para enlazarlo"
+                    android:textColor="@color/aureum_text"
+                    android:textSize="13sp"
+                    android:alpha="0.85"/>
+            </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -50,27 +72,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="6dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="2dp"
-        app:cardBackgroundColor="@color/aureum_beige">
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="3dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/aureum_beige"
+        app:cardBackgroundColor="@color/aureumCard">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:padding="14dp"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_add_plus"
+                android:background="@drawable/bg_circle_beige"
+                android:padding="8dp"
+                android:contentDescription="Crear nuevo registro" />
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Crear Nuevo Registro"
-                android:textStyle="bold"
-                android:textColor="@color/aureum_text"
-                android:textSize="15sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="para devolver o aumentar la deuda manualmente"
-                android:textColor="@color/aureum_text"
-                android:textSize="13sp"/>
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Crear nuevo registro"
+                    android:textStyle="bold"
+                    android:textColor="@color/aureum_text"
+                    android:textSize="15sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Devolver o aumentar la deuda manualmente"
+                    android:textColor="@color/aureum_text"
+                    android:textSize="13sp"
+                    android:alpha="0.85"/>
+            </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -78,10 +121,20 @@
         android:id="@+id/btnCancelarModal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="CANCELAR"
+        android:text="CERRAR"
         android:textStyle="bold"
+        android:layout_marginTop="12dp"
+        android:elevation="2dp"
+        android:paddingVertical="12dp"
+        app:cornerRadius="16dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/aureum_beige"
         app:backgroundTint="@color/aureum_beige"
         android:textColor="@color/aureum_text"
-        android:layout_marginTop="10dp"/>
+        app:icon="@drawable/ic_close_small"
+        app:iconTint="@color/aureum_text"
+        app:iconGravity="textStart"
+        app:iconPadding="6dp"
+        app:iconSize="16dp" />
 
 </LinearLayout>

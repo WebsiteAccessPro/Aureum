@@ -27,7 +27,8 @@ class DebtAdapter(
     private var accountsInfo: Map<String, Map<String, Any?>> = emptyMap(),
     private val accionFija: String,
     private val onAddRegistroClick: ((String, Map<String, Any?>) -> Unit)? = null,
-    private val onItemClick: ((String, Map<String, Any?>) -> Unit)? = null
+    private val onItemClick: ((String, Map<String, Any?>) -> Unit)? = null,
+    private val showAddCta: Boolean = true
 ) : RecyclerView.Adapter<DebtAdapter.VH>() {
 
     inner class VH(view: View) : RecyclerView.ViewHolder(view) {
@@ -80,7 +81,8 @@ class DebtAdapter(
         val base = "PEN"
         val montoBase = convertirMoneda(monto, monedaFinal, base)
         val sign = if (accion == "presto") "+" else "-"
-        holder.tvMonto.text = "$base ${sign}${nf.format(montoBase)}"
+        val valorAbs = kotlin.math.abs(montoBase)
+        holder.tvMonto.text = "$base ${sign}${nf.format(valorAbs)}"
 
         val colorRes = if (accion == "presto") R.color.aureum_green else R.color.aureum_red
         val color = ContextCompat.getColor(holder.itemView.context, colorRes)
@@ -89,6 +91,7 @@ class DebtAdapter(
         val fechaLabel = DateUtils.relativeDate("", fechaTs)
         holder.tvFecha.text = fechaLabel
         holder.imgIcono.setImageResource(R.drawable.ic_user)
+        holder.ctaAdd.visibility = if (showAddCta) View.VISIBLE else View.GONE
         holder.ctaAdd.setOnClickListener { onAddRegistroClick?.invoke(accionFija, item) }
         holder.itemView.setOnClickListener { onItemClick?.invoke(accionFija, item) }
     }

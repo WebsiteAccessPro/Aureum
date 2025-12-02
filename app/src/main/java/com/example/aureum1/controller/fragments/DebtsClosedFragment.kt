@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aureum1.R
@@ -37,6 +38,7 @@ class DebtsClosedFragment : Fragment(R.layout.fragment_debts_tabcerrado) {
 
         rvCerradas = view.findViewById(R.id.rvDeudasCerradas)
         val tvEmpty = view.findViewById<TextView>(R.id.tvEmptyClosed)
+        val cardEmpty = view.findViewById<CardView>(R.id.cardEmptyClosed)
         rvCerradas.layoutManager = LinearLayoutManager(requireContext())
         rvCerradas.setHasFixedSize(false)
         rvCerradas.isNestedScrollingEnabled = false
@@ -88,6 +90,8 @@ class DebtsClosedFragment : Fragment(R.layout.fragment_debts_tabcerrado) {
             if (ts is com.google.firebase.Timestamp) ts.toDate().time else 0L
         }
         adapter.submitList(combined)
-        view?.findViewById<TextView>(R.id.tvEmptyClosed)?.visibility = if (combined.isEmpty()) View.VISIBLE else View.GONE
+        val vis = if (combined.isEmpty()) View.VISIBLE else View.GONE
+        view?.findViewById<TextView>(R.id.tvEmptyClosed)?.visibility = vis
+        view?.findViewById<CardView>(R.id.cardEmptyClosed)?.visibility = vis
     }
 }

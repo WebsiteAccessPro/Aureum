@@ -1,7 +1,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="164dp"
+    android:layout_width="180dp"
     android:layout_height="100dp"
     android:layout_margin="8dp"
     app:cardCornerRadius="16dp"
@@ -13,8 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp">
-
-        <!-- Nombre -->
 
         <!-- Número -->
         <TextView
@@ -43,8 +41,8 @@
         <!-- Chip a la derecha del número -->
         <ImageView
             android:id="@+id/imgChip"
-            android:layout_width="22dp"
-            android:layout_height="18dp"
+            android:layout_width="28dp"
+            android:layout_height="22dp"
             android:layout_marginStart="4dp"
             android:src="@drawable/chip"
             android:contentDescription="Chip"
@@ -63,6 +61,6 @@
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/tvAccountMasked"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="2dp" />   <!-- ← CORRECTO -->
+            android:layout_marginTop="2dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

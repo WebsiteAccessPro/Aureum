@@ -9,8 +9,12 @@ import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.util.Patterns
 import android.view.animation.AnimationUtils
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +40,9 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import android.animation.ValueAnimator
+import android.animation.ObjectAnimator
+import android.animation.AnimatorSet
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -89,7 +96,7 @@ class LoginActivity : AppCompatActivity() {
                                     val emailCredential = EmailAuthProvider.getCredential(emailFromGoogle, password)
                                     current.linkWithCredential(emailCredential).addOnCompleteListener { linkTask ->
                                         if (linkTask.isSuccessful) {
-                                            Log.d("AUTH", "✅ linkWithCredential exitoso (Email -> Google actual)")
+                                            Log.d("AUTH", "linkWithCredential exitoso (Email -> Google actual)")
                                             if (binding.chkRemember.isChecked) savePrefs(emailFromGoogle, password) else clearPrefs()
                                             ensureUserProfile()
                                             goHome()
@@ -113,7 +120,7 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("AUTH", "Rama: vincular Google a cuenta actual")
                 current.linkWithCredential(credential).addOnCompleteListener { linkTask ->
                     if (linkTask.isSuccessful) {
-                        Log.d("AUTH", "✅ linkWithCredential exitoso (Google -> Email)")
+                        Log.d("AUTH", "linkWithCredential exitoso (Google -> Email)")
                         if (binding.chkRemember.isChecked) {
                             savePrefs(current.email ?: "", binding.etPassword.text?.toString().orEmpty())
                         } else clearPrefs()
@@ -125,7 +132,7 @@ class LoginActivity : AppCompatActivity() {
                             Log.d("AUTH", "⚠️ Collision: ya vinculado, inicia con Google")
                             auth.signInWithCredential(credential).addOnCompleteListener { t2 ->
                                 if (t2.isSuccessful) {
-                                    Log.d("AUTH", "✅ SignIn con Google después de colisión")
+                                    Log.d("AUTH", "SignIn con Google después de colisión")
                                     ensureUserProfile()
                                     goHome()
                                 } else showError(t2.exception)
@@ -164,7 +171,7 @@ class LoginActivity : AppCompatActivity() {
                                                     auth.currentUser?.linkWithCredential(credential)
                                                         ?.addOnCompleteListener { linkTask ->
                                                             if (linkTask.isSuccessful) {
-                                                                Log.d("AUTH", "✅ linkWithCredential exitoso (Google -> Email tras login)")
+                                                                Log.d("AUTH", "linkWithCredential exitoso (Google -> Email tras login)")
                                                                 if (binding.chkRemember.isChecked) savePrefs(emailFromGoogle, password) else clearPrefs()
                                                                 ensureUserProfile()
                                                                 goHome()
@@ -256,6 +263,26 @@ class LoginActivity : AppCompatActivity() {
             if (binding.etEmail.text.isNullOrBlank()) binding.etEmail.setText(email)
         }
 
+        val tilEmail = findViewById<TextInputLayout>(R.id.tilLoginEmail)
+        val tilPass = findViewById<TextInputLayout>(R.id.tilLoginPass)
+        fun animateFocus(til: TextInputLayout, focused: Boolean) {
+            val targetColor = if (focused) ContextCompat.getColor(this, R.color.aureum_gold) else Color.parseColor("#1E3C72")
+            til.boxStrokeColor = targetColor
+            val from = if (focused) 1 else 2
+            val to = if (focused) 2 else 1
+            val strokeAnim = ValueAnimator.ofInt(from, to).apply {
+                duration = 180
+                addUpdateListener { v -> til.boxStrokeWidth = (v.animatedValue as Int) }
+            }
+            val card = findViewById<com.google.android.material.card.MaterialCardView>(R.id.loginCard)
+            val scaleX = ObjectAnimator.ofFloat(card, "scaleX", 1f, if (focused) 1.005f else 1f)
+            val scaleY = ObjectAnimator.ofFloat(card, "scaleY", 1f, if (focused) 1.005f else 1f)
+            AnimatorSet().apply { playTogether(strokeAnim, scaleX, scaleY); start() }
+        }
+
+        binding.etEmail.setOnFocusChangeListener { _, hasFocus -> animateFocus(tilEmail, hasFocus) }
+        binding.etPassword.setOnFocusChangeListener { _, hasFocus -> animateFocus(tilPass, hasFocus) }
+
         if (linkAfterRegister) {
             Toast.makeText(
                 this,
@@ -270,8 +297,7 @@ class LoginActivity : AppCompatActivity() {
         // --- Validaciones en tiempo real ---
         setupValidation()
 
-        // --- Botón ayuda ---
-        setupHelpButton()
+
 
         // --- Biometría ---
         setupBiometricLogin()
@@ -281,7 +307,7 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.etEmail.text?.toString()?.trim()?.lowercase().orEmpty()
             val pass = binding.etPassword.text?.toString()?.trim().orEmpty()
 
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            if (!isValidEmailStrict(email)) {
                 binding.etEmail.error = "Ingresa un correo válido"
                 return@setOnClickListener
             }
@@ -325,38 +351,28 @@ class LoginActivity : AppCompatActivity() {
 
         // --- OLVIDÉ CONTRASEÑA ---
         auth.setLanguageCode("es")
-        binding.tvForgot.setOnClickListener {
-            val email = binding.etEmail.text?.toString()?.trim().orEmpty()
-            if (email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                sendResetEmail(email)
-            } else {
-                showEmailDialog()
-            }
+        binding.tvForgot.setOnClickListener { showForgotBottomSheet() }
+
+        // ------------------------------
+        // ANIMACIONES DE ENTRADA (tras primer render)
+        // ------------------------------
+        binding.root.post {
+            val fadeSlide = AnimationUtils.loadAnimation(this, R.anim.fade_in_slide_up)
+            val fadeShort = AnimationUtils.loadAnimation(this, R.anim.fade_in_short)
+            val bounce = AnimationUtils.loadAnimation(this, R.anim.bounce)
+
+            binding.imgLogo.startAnimation(fadeSlide)
+            binding.loginCard.startAnimation(fadeSlide)
+
+            fadeShort.startOffset = 900
+            binding.btnGoogle.startAnimation(fadeShort)
+            binding.btnFacebook.startAnimation(fadeShort)
+            binding.chkRemember.startAnimation(fadeShort)
+            binding.tvForgot.startAnimation(fadeShort)
+
+            bounce.startOffset = 1200
+            binding.biometricSection.startAnimation(bounce)
         }
-
-        // ------------------------------
-        // ✨ ANIMACIONES DE ENTRADA
-        // ------------------------------
-        val fadeSlide = AnimationUtils.loadAnimation(this, R.anim.fade_in_slide_up)
-        val fadeShort = AnimationUtils.loadAnimation(this, R.anim.fade_in_short)
-        val bounce = AnimationUtils.loadAnimation(this, R.anim.bounce)
-
-        // Logo principal
-        binding.imgLogo.startAnimation(fadeSlide)
-
-        // Card del login (inputs + botones)
-        binding.loginCard.startAnimation(fadeSlide)
-
-        // Aparecer con secuencia: botones sociales y recordarme
-        fadeShort.startOffset = 500
-        binding.btnGoogle.startAnimation(fadeShort)
-        binding.btnFacebook.startAnimation(fadeShort)
-        binding.chkRemember.startAnimation(fadeShort)
-        binding.tvForgot.startAnimation(fadeShort)
-
-        // Biometría aparece al final con rebote
-        bounce.startOffset = 700
-        binding.biometricSection.startAnimation(bounce)
     }
 
 
@@ -384,7 +400,7 @@ class LoginActivity : AppCompatActivity() {
                     val user = FirebaseAuth.getInstance().currentUser
                     Toast.makeText(this, "Bienvenido ${user?.displayName}", Toast.LENGTH_SHORT).show()
 
-                    // ✅ Guardar/actualizar en Firestore igual que con Google
+                    //Guardar/actualizar en Firestore igual que con Google
                     ensureUserProfile()
 
                     // Ir a Home
@@ -417,22 +433,22 @@ class LoginActivity : AppCompatActivity() {
                 val email = s.toString().trim()
                 when {
                     email.isEmpty() -> {
-                        emailLayout.error = "Este campo es obligatorio"
+                        emailLayout.error = "Ingresa tu correo electrónico"
                         emailLayout.helperText = null
                         emailLayout.boxStrokeWidth = 4
                         emailLayout.setBoxStrokeColor(Color.RED)
                     }
-                    !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                        emailLayout.error = "Formato inválido (ej: usuario@mail.com)"
+                    !isValidEmailStrict(email) -> {
+                        emailLayout.error = "Formato inválido (ej: usuario@gmail.com)"
                         emailLayout.helperText = null
                         emailLayout.boxStrokeWidth = 4
-                        emailLayout.setBoxStrokeColor(Color.parseColor("#FFA500"))
+                        emailLayout.setBoxStrokeColor(Color.parseColor("#ffd000ff"))
                     }
                     else -> {
                         emailLayout.error = null
-                        emailLayout.helperText = "Correo válido ✅"
-                        emailLayout.boxStrokeWidth = 5
-                        emailLayout.setBoxStrokeColor(Color.parseColor("#4CAF50"))
+                        emailLayout.helperText = "Correo electrónico válido"
+                        emailLayout.boxStrokeWidth = 4
+                        emailLayout.setBoxStrokeColor(ContextCompat.getColor(this@LoginActivity, R.color.green))
                     }
                 }
                 toggleLoginButton()
@@ -447,34 +463,28 @@ class LoginActivity : AppCompatActivity() {
                 val pass = s.toString()
                 when {
                     pass.isEmpty() -> {
-                        passLayout.error = "Contraseña inválida"
+                        passLayout.error = "Ingresa tu contraseña"
                         passLayout.helperText = null
                         passLayout.boxStrokeWidth = 4
                         passLayout.setBoxStrokeColor(Color.RED)
                     }
-                    pass.length < 4 -> {
-                        passLayout.error = "Muy débil ❌"
-                        passLayout.helperText = null
-                        passLayout.boxStrokeWidth = 5
-                        passLayout.setBoxStrokeColor(Color.RED)
-                    }
                     pass.length < 6 -> {
-                        passLayout.error = null
-                        passLayout.helperText = "Aceptable ⚠️"
-                        passLayout.boxStrokeWidth = 5
-                        passLayout.setBoxStrokeColor(Color.parseColor("#FFA500"))
+                        passLayout.error = "Usa al menos 6 caracteres"
+                        passLayout.helperText = null
+                        passLayout.boxStrokeWidth = 4
+                        passLayout.setBoxStrokeColor(Color.RED)
                     }
                     pass.length < 10 -> {
                         passLayout.error = null
-                        passLayout.helperText = "Segura ✅"
-                        passLayout.boxStrokeWidth = 5
-                        passLayout.setBoxStrokeColor(Color.parseColor("#8BC34A"))
+                        passLayout.helperText = "Nivel adecuado"
+                        passLayout.boxStrokeWidth = 4
+                        passLayout.setBoxStrokeColor(ContextCompat.getColor(this@LoginActivity, R.color.aureum_gold))
                     }
                     else -> {
                         passLayout.error = null
-                        passLayout.helperText = "Súper segura 🔒"
-                        passLayout.boxStrokeWidth = 6
-                        passLayout.setBoxStrokeColor(Color.parseColor("#2E7D32"))
+                        passLayout.helperText = "Contraseña fuerte"
+                        passLayout.boxStrokeWidth = 4
+                        passLayout.setBoxStrokeColor(ContextCompat.getColor(this@LoginActivity, R.color.green))
                     }
                 }
                 toggleLoginButton()
@@ -485,18 +495,19 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun toggleLoginButton() {
-        val emailValid = Patterns.EMAIL_ADDRESS.matcher(binding.etEmail.text?.toString().orEmpty()).matches()
-        val passValid = !binding.etPassword.text.isNullOrEmpty()
+        val emailValid = isValidEmailStrict(binding.etEmail.text?.toString().orEmpty())
+        val passValid = (binding.etPassword.text?.length ?: 0) >= 6
         binding.btnLogin.isEnabled = emailValid && passValid
-        binding.btnLogin.setBackgroundColor(
-            if (binding.btnLogin.isEnabled) Color.parseColor("#4A90E2")
-            else Color.GRAY
+        val enabledColor = ContextCompat.getColor(this, R.color.aureum_gold)
+        val disabledColor = Color.GRAY
+        binding.btnLogin.backgroundTintList = android.content.res.ColorStateList.valueOf(
+            if (binding.btnLogin.isEnabled) enabledColor else disabledColor
         )
     }
 
     private fun launchGoogle() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id)) // ✅ IMPORTANTE
+            .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
         val client = GoogleSignIn.getClient(this, gso)
@@ -508,30 +519,59 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
 
+    private fun isValidEmailStrict(email: String): Boolean {
+        val r = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", RegexOption.IGNORE_CASE)
+        if (!r.matches(email)) return false
+        val domain = email.substringAfter("@")
+        if (domain.contains("..")) return false
+        return true
+    }
+
     private fun showError(e: Exception?) {
         Toast.makeText(this, e?.localizedMessage ?: "Error al iniciar sesión", Toast.LENGTH_SHORT).show()
     }
 
-    private fun showEmailDialog() {
-        val input = TextInputEditText(this).apply {
-            hint = getString(R.string.enter_your_email)
-            inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-        }
+    private fun showForgotBottomSheet() {
+        val dialog = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.sheet_forgot_password, null)
+        dialog.setContentView(view)
+        val emailLayout = view.findViewById<TextInputLayout>(R.id.forgotEmailLayout)
+        val emailInput = view.findViewById<TextInputEditText>(R.id.forgotEmailInput)
+        val btnSend = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnSendReset)
+        val btnCancel = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnCancelReset)
 
-        MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.forgot_password))
-            .setView(input)
-            .setPositiveButton(getString(R.string.send)) { d, _ ->
-                val email = input.text?.toString()?.trim().orEmpty()
-                if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    sendResetEmail(email)
+        emailInput.setText(binding.etEmail.text)
+        btnSend.isEnabled = isValidEmailStrict(emailInput.text?.toString().orEmpty())
+
+        emailInput.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val email = s?.toString()?.trim().orEmpty()
+                if (!isValidEmailStrict(email)) {
+                    emailLayout.error = "Ingresa un correo válido"
+                    btnSend.isEnabled = false
                 } else {
-                    Toast.makeText(this, "Correo inválido.", Toast.LENGTH_SHORT).show()
+                    emailLayout.error = null
+                    btnSend.isEnabled = true
                 }
-                d.dismiss()
             }
-            .setNegativeButton(getString(R.string.cancel)) { d, _ -> d.dismiss() }
-            .show()
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        btnSend.setOnClickListener {
+            val email = emailInput.text?.toString()?.trim().orEmpty()
+            if (isValidEmailStrict(email)) {
+                sendResetEmail(email)
+                dialog.dismiss()
+            } else {
+                emailLayout.error = "Ingresa un correo válido"
+            }
+        }
+        btnCancel.setOnClickListener { dialog.dismiss() }
+
+        dialog.show()
+        val sheet = dialog.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+        sheet?.let { BottomSheetBehavior.from(it).state = BottomSheetBehavior.STATE_EXPANDED }
     }
 
     private fun sendResetEmail(email: String) {
@@ -631,26 +671,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupHelpButton() {
-        binding.btnHelp.setOnClickListener {
-            val message = """
-            <b>Grupo 4</b><br><br>
-            <b>Integrantes:</b><br>
-            • <font color="#5B4E2D">AGUILAR CONTRERAS, Adrián Antonio</font><br>
-            • <font color="#5B4E2D">DOMINGUEZ TERREROS, Jerson Manuel</font><br>
-            • <font color="#5B4E2D">GARCIA ALAYO, Jimena Alexandra</font><br>
-            • <font color="#5B4E2D">SANCHEZ PRIETO, Bruce Harbert</font><br>
-            • <font color="#5B4E2D">TERRONES HUARACA, Christian Jose</font><br><br>
-            <i>Trujillo - 2025</i>
-        """.trimIndent()
-
-            AlertDialog.Builder(this)
-                .setTitle("Información del Grupo")
-                .setMessage(HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY))
-                .setPositiveButton("Cerrar") { dialog, _ -> dialog.dismiss() }
-                .show()
-        }
-    }
+    
 
     private fun saveAccountId(uid: String) {
         getSharedPreferences(ACCOUNT_PREFS, MODE_PRIVATE).edit().apply {
@@ -704,7 +725,7 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(
                             this@LoginActivity,
-                            "Para usar la huella, habilita 'Recordar' con email y contraseña, o activa Anonymous en Firebase.",
+                            "Para usar la huella, habilita 'Recordar' con email y contraseña.",
                             Toast.LENGTH_LONG
                         ).show()
                     }

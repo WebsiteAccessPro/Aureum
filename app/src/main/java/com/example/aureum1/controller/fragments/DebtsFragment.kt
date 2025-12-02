@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aureum1.R
@@ -58,8 +59,14 @@ class DebtsFragment : Fragment(R.layout.fragment_debts) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<TextView>(R.id.tabActivo)?.setOnClickListener { }
-        view.findViewById<TextView>(R.id.tabCerrado)?.setOnClickListener {
+        val tabActivo = view.findViewById<TextView>(R.id.tabActivo)
+        val tabCerrado = view.findViewById<TextView>(R.id.tabCerrado)
+        tabActivo?.isSelected = true
+        tabCerrado?.isSelected = false
+        tabActivo?.setOnClickListener { }
+        tabCerrado?.setOnClickListener {
+            tabActivo?.isSelected = false
+            tabCerrado?.isSelected = true
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, DebtsClosedFragment(), "DEBTS_CLOSED")
                 .commit()
@@ -75,6 +82,8 @@ class DebtsFragment : Fragment(R.layout.fragment_debts) {
         rvMePrestaron = view.findViewById(R.id.rvDeudasMePrestaron)
         val tvEmptyPresto = view.findViewById<TextView>(R.id.tvEmptyPresto)
         val tvEmptyMePrestaron = view.findViewById<TextView>(R.id.tvEmptyMePrestaron)
+        val cardEmptyPresto = view.findViewById<CardView>(R.id.cardEmptyPresto)
+        val cardEmptyMePrestaron = view.findViewById<CardView>(R.id.cardEmptyMePrestaron)
         rvPresto.layoutManager = LinearLayoutManager(requireContext())
         rvMePrestaron.layoutManager = LinearLayoutManager(requireContext())
         rvPresto.setHasFixedSize(false)
@@ -153,11 +162,15 @@ class DebtsFragment : Fragment(R.layout.fragment_debts) {
         listenerMePrestaron?.remove()
         listenerPresto = repo.subscribeByAction(uid, "presto") { lista ->
             adapterPresto.submitList(lista)
-            tvEmptyPresto?.visibility = if (lista.isEmpty()) View.VISIBLE else View.GONE
+            val vis = if (lista.isEmpty()) View.VISIBLE else View.GONE
+            tvEmptyPresto?.visibility = vis
+            cardEmptyPresto?.visibility = vis
         }
         listenerMePrestaron = repo.subscribeByAction(uid, "me_prestaron") { lista ->
             adapterMePrestaron.submitList(lista)
-            tvEmptyMePrestaron?.visibility = if (lista.isEmpty()) View.VISIBLE else View.GONE
+            val vis = if (lista.isEmpty()) View.VISIBLE else View.GONE
+            tvEmptyMePrestaron?.visibility = vis
+            cardEmptyMePrestaron?.visibility = vis
         }
     }
 

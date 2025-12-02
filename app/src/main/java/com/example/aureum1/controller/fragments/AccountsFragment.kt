@@ -124,15 +124,53 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
         val tvMoneda = v.findViewById<android.widget.TextView>(R.id.tvMonedaCuenta)
         val tvSaldo = v.findViewById<android.widget.TextView>(R.id.tvSaldoCuenta)
 
-        icon.setImageResource(R.drawable.ic_bank)
+        icon.setImageResource(resolveAccountIcon(acc.nombre, acc.tipo))
         tvNombre.text = acc.nombre
-        tvNumero.text = acc.numero
+        tvNumero.text = formatBlocks(acc.numero)
         tvTipo.text = acc.tipo.ifBlank { "Cuenta" }
         tvMoneda.text = acc.moneda
         tvSaldo.text = String.format(java.util.Locale.getDefault(), "%s %,.2f", acc.moneda, acc.valor)
 
         v.findViewById<View>(R.id.btnCerrarDetalle)?.setOnClickListener { dialog.dismiss() }
         dialog.show()
+        dialog.setOnDismissListener { adapter.setSelected(null); selectedAccount = null }
+    }
+
+    private fun formatBlocks(num: String?): String {
+        val clean = (num ?: "").replace("\\s+".toRegex(), "")
+        return if (clean.isEmpty()) "" else clean.chunked(4).joinToString(" ")
+    }
+
+    private fun resolveAccountIcon(nombre: String?, tipo: String?): Int {
+        val n = nombre?.lowercase().orEmpty()
+        val t = tipo?.lowercase().orEmpty()
+
+        return when {
+            // BANCOS
+            n.contains("bcp") -> R.drawable.ic_bcp
+            n.contains("interbank") -> R.drawable.ic_interbank
+            n.contains("bbva") -> R.drawable.ic_bbva
+            n.contains("scotiabank") -> R.drawable.ic_scotiabank
+
+            // APPS
+            n.contains("yape") -> R.drawable.ic_yape
+            n.contains("plin") -> R.drawable.ic_plin
+
+            // TARJETAS
+            n.contains("mastercard") -> R.drawable.ic_mastercard
+            n.contains("visa") -> R.drawable.ic_visa
+
+            // TIPOS
+            t.contains("efectivo") -> R.drawable.ic_cash
+            t.contains("ahorro") -> R.drawable.ic_bank
+            t.contains("corriente") -> R.drawable.ic_bank
+            t.contains("tarjeta") -> R.drawable.ic_card
+            t.contains("crédito") -> R.drawable.ic_card
+            t.contains("débito") -> R.drawable.ic_card
+
+            // DEFAULT
+            else -> R.drawable.ic_bank
+        }
     }
 
     private fun configurarCharts(chartDeudas: PieChart?, chartAnual: BarChart?, chartMes: LineChart?) {
@@ -141,8 +179,11 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
         chartDeudas?.holeRadius = 70f
         chartDeudas?.setTransparentCircleRadius(75f)
         chartDeudas?.setDrawEntryLabels(false)
-        chartDeudas?.setNoDataText("Sin datos")
-        chartDeudas?.setNoDataTextColor(android.graphics.Color.parseColor("#999999"))
+        chartDeudas?.setNoDataText("Aún sin datos • Registra movimientos")
+        chartDeudas?.setNoDataTextColor(android.graphics.Color.parseColor("#8A8A8A"))
+        chartDeudas?.setCenterTextColor(android.graphics.Color.parseColor("#8A8A8A"))
+        chartDeudas?.setCenterTextSize(14f)
+        chartDeudas?.setCenterTextTypeface(android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL))
         chartDeudas?.legend?.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
         chartDeudas?.legend?.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
         chartDeudas?.legend?.orientation = Legend.LegendOrientation.HORIZONTAL
@@ -158,8 +199,8 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
         chartAnual?.xAxis?.granularity = 1f
         chartAnual?.xAxis?.textColor = android.graphics.Color.parseColor("#3A3A3A")
         chartAnual?.legend?.isEnabled = false
-        chartAnual?.setNoDataText("Sin datos")
-        chartAnual?.setNoDataTextColor(android.graphics.Color.parseColor("#999999"))
+        chartAnual?.setNoDataText("Aún sin datos • Registra movimientos")
+        chartAnual?.setNoDataTextColor(android.graphics.Color.parseColor("#8A8A8A"))
 
         chartMes?.description?.isEnabled = false
         chartMes?.axisRight?.isEnabled = false
@@ -173,6 +214,8 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
         chartMes?.legend?.isEnabled = true
         chartMes?.legend?.textColor = android.graphics.Color.parseColor("#3A3A3A")
         chartMes?.setExtraBottomOffset(12f)
+        chartMes?.setNoDataText("Aún sin datos • Registra movimientos")
+        chartMes?.setNoDataTextColor(android.graphics.Color.parseColor("#8A8A8A"))
     }
 
     private fun suscribirEstadisticas(chartDeudas: PieChart?, chartAnual: BarChart?, chartMes: LineChart?) {
@@ -187,13 +230,20 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
             val entries = mutableListOf<PieEntry>()
             if (act > 0) entries.add(PieEntry(act.toFloat(), "Activas"))
             if (cer > 0) entries.add(PieEntry(cer.toFloat(), "Cerradas"))
-            val ds = PieDataSet(entries, "")
-            ds.colors = listOf(android.graphics.Color.parseColor("#C9AA66"), android.graphics.Color.parseColor("#00BFA6"))
-            ds.sliceSpace = 2f
-            ds.valueTextColor = android.graphics.Color.TRANSPARENT
-            chartDeudas?.data = PieData(ds)
-            chartDeudas?.animateY(600)
-            chartDeudas?.invalidate()
+            if (entries.isEmpty()) {
+                chartDeudas?.centerText = "Aún sin datos"
+                chartDeudas?.clear()
+                chartDeudas?.invalidate()
+            } else {
+                chartDeudas?.centerText = ""
+                val ds = PieDataSet(entries, "")
+                ds.colors = listOf(android.graphics.Color.parseColor("#e5f130ff"), android.graphics.Color.parseColor("#00BFA6"))
+                ds.sliceSpace = 2f
+                ds.valueTextColor = android.graphics.Color.TRANSPARENT
+                chartDeudas?.data = PieData(ds)
+                chartDeudas?.animateY(600)
+                chartDeudas?.invalidate()
+            }
         }
         lActivasPresto = debtRepo.subscribeByAction(uid, "presto", estado = "activo") { lista -> activasPresto = lista.size; renderDeudasChart() }
         lActivasMP = debtRepo.subscribeByAction(uid, "me_prestaron", estado = "activo") { lista -> activasMP = lista.size; renderDeudasChart() }
@@ -224,35 +274,48 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
             }
             val meses = arrayOf("Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic")
             val barEntries = mensual.mapIndexed { i, v -> BarEntry(i.toFloat(), v.toFloat()) }
-            val barSet = BarDataSet(barEntries, "Gasto")
-            barSet.color = android.graphics.Color.parseColor("#D86D6D")
-            val barData = BarData(barSet)
-            barData.barWidth = 0.6f
-            barData.setValueTextColor(android.graphics.Color.TRANSPARENT)
-            chartAnual?.xAxis?.valueFormatter = object: ValueFormatter(){ override fun getAxisLabel(value: Float, axis: com.github.mikephil.charting.components.AxisBase?): String { val i=value.toInt(); return if(i in 0..11) meses[i] else "" } }
-            chartAnual?.data = barData
-            chartAnual?.animateY(600)
-            chartAnual?.invalidate()
+            val allZeroBar = mensual.all { it == 0.0 }
+            if (allZeroBar) {
+                chartAnual?.clear()
+                chartAnual?.invalidate()
+            } else {
+                val barSet = BarDataSet(barEntries, "Gasto")
+                barSet.color = android.graphics.Color.parseColor("#D86D6D")
+                val barData = BarData(barSet)
+                barData.barWidth = 0.6f
+                barData.setValueTextColor(android.graphics.Color.TRANSPARENT)
+                chartAnual?.xAxis?.valueFormatter = object: ValueFormatter(){ override fun getAxisLabel(value: Float, axis: com.github.mikephil.charting.components.AxisBase?): String { val i=value.toInt(); return if(i in 0..11) meses[i] else "" } }
+                chartAnual?.data = barData
+                chartAnual?.animateY(600)
+                chartAnual?.invalidate()
+            }
 
             val ingresosEntries = ingresosDia.mapIndexed { i, v -> Entry(i.toFloat()+1f, v.toFloat()) }
             val gastosEntries = gastosDia.mapIndexed { i, v -> Entry(i.toFloat()+1f, v.toFloat()) }
-            val lIng = LineDataSet(ingresosEntries, "Ingresos")
-            lIng.color = android.graphics.Color.parseColor("#3FA77A")
-            lIng.setDrawCircles(false)
-            lIng.mode = LineDataSet.Mode.CUBIC_BEZIER
-            lIng.setDrawFilled(true)
-            lIng.fillColor = android.graphics.Color.parseColor("#CFEFE4")
-            val lGas = LineDataSet(gastosEntries, "Gastos")
-            lGas.color = android.graphics.Color.parseColor("#D86D6D")
-            lGas.setDrawCircles(false)
-            lGas.mode = LineDataSet.Mode.CUBIC_BEZIER
-            lGas.setDrawFilled(true)
-            lGas.fillColor = android.graphics.Color.parseColor("#F7D3D3")
-            val lineData = LineData(lIng, lGas)
-            lineData.setValueTextColor(android.graphics.Color.TRANSPARENT)
-            chartMes?.data = lineData
-            chartMes?.animateX(600)
-            chartMes?.invalidate()
+            val ingresosZero = ingresosDia.all { it == 0.0 }
+            val gastosZero = gastosDia.all { it == 0.0 }
+            if (ingresosZero && gastosZero) {
+                chartMes?.clear()
+                chartMes?.invalidate()
+            } else {
+                val lIng = LineDataSet(ingresosEntries, "Ingresos")
+                lIng.color = android.graphics.Color.parseColor("#3FA77A")
+                lIng.setDrawCircles(false)
+                lIng.mode = LineDataSet.Mode.CUBIC_BEZIER
+                lIng.setDrawFilled(true)
+                lIng.fillColor = android.graphics.Color.parseColor("#CFEFE4")
+                val lGas = LineDataSet(gastosEntries, "Gastos")
+                lGas.color = android.graphics.Color.parseColor("#D86D6D")
+                lGas.setDrawCircles(false)
+                lGas.mode = LineDataSet.Mode.CUBIC_BEZIER
+                lGas.setDrawFilled(true)
+                lGas.fillColor = android.graphics.Color.parseColor("#F7D3D3")
+                val lineData = LineData(lIng, lGas)
+                lineData.setValueTextColor(android.graphics.Color.TRANSPARENT)
+                chartMes?.data = lineData
+                chartMes?.animateX(600)
+                chartMes?.invalidate()
+            }
         }
     }
 }

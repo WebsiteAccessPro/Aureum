@@ -9,14 +9,19 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#C9AA66">
+        android:background="#C9AA66"
+        android:elevation="0dp"
+        app:liftOnScroll="false"
+        app:liftOnScrollTargetViewId="@+id/recyclerSeleccionCategoria"
+        app:statusBarForeground="@android:color/transparent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbarSeleccionCategoria"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/flechaizquierda2"
+            app:navigationIcon="@drawable/ic_close_small"
             app:title="Seleccionar categoría"
+            app:titleCentered="true"
             app:titleTextColor="@color/aureum_text"/>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -24,8 +29,8 @@
         android:id="@+id/recyclerSeleccionCategoria"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:padding="8dp"
-        android:clipToPadding="false"/>
+        android:padding="12dp"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

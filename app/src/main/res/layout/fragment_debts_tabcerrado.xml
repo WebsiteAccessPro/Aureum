@@ -11,7 +11,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/aureum_cream">
+        android:background="@color/aureum_cream"
+        android:elevation="2dp"
+        android:paddingVertical="16dp">
 
         <TextView
             android:id="@+id/tvTituloDeudas"
@@ -20,20 +22,18 @@
             android:text="Deudas"
             android:textColor="@color/aureum_text"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <ImageView
             android:id="@+id/btnBuscarDeuda"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:src="@android:drawable/ic_menu_search"
             app:tint="@color/aureum_text"
             android:layout_marginEnd="20dp"
-            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -42,12 +42,20 @@
     <LinearLayout
         android:id="@+id/layoutTabs"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="44dp"
         android:layout_marginTop="60dp"
-        android:background="@color/aureum_beige"
+        android:background="@color/aureum_cream"
         android:orientation="horizontal"
-        android:weightSum="2">
+        android:weightSum="2"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        android:elevation="2dp"
+        android:padding="6dp"
+        android:gravity="center"
+        android:clipToOutline="true"
+        android:outlineProvider="background">
 
+        <!-- Pestaña Activa -->
         <TextView
             android:id="@+id/tabActivo"
             android:layout_width="0dp"
@@ -55,11 +63,17 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="Activo"
-            android:textColor="@color/aureum_text"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:background="@color/aureum_beige"/>
+            android:background="@drawable/bg_tab_selector2"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:clipToOutline="true"
+            android:outlineProvider="background"
+            android:alpha="0.98"
+            android:foreground="?attr/selectableItemBackground"/>
 
+        <!-- Pestaña Cerrada -->
         <TextView
             android:id="@+id/tabCerrado"
             android:layout_width="0dp"
@@ -70,7 +84,13 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:background="@color/aureum_gold"/>
+            android:background="@drawable/bg_tab_selector2"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:clipToOutline="true"
+            android:outlineProvider="background"
+            android:foreground="?attr/selectableItemBackground"
+            android:alpha="0.98"/>
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -87,15 +107,51 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvEmptyClosed"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardEmptyClosed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Aquí aparecerán tus deudas cerradas"
-                android:textColor="@color/aureum_text"
-                android:textSize="13sp"
-                android:alpha="0.7"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp"
+                android:background="@color/aureum_beige"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center_horizontal">
+
+                    <FrameLayout
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/circle_bg_icon"
+                        android:clipToOutline="true">
+
+                        <ImageView
+                            android:id="@+id/icEmptyPresto"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_no_data"
+                            app:tint="@color/aureum_text"/>
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/tvEmptyClosed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Aquí aparecerán tus deudas cerradas o liquidadas"
+                        android:textColor="@color/aureum_text"
+                        android:textSize="14sp"
+                        android:alpha="0.7"
+                        android:gravity="center"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvDeudasCerradas"

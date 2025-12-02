@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.aureum1.R
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -21,6 +22,10 @@ class EditDeudaActivity : AppCompatActivity() {
     private lateinit var etCantidad: TextInputEditText
     private lateinit var etFecha: TextInputEditText
     private lateinit var etFechaVenc: TextInputEditText
+
+    private lateinit var tilNombre: TextInputLayout
+    private lateinit var tilFecha: TextInputLayout
+    private lateinit var tilFechaVenc: TextInputLayout
 
     private var accion: String = "presto"
     private var debtId: String = ""
@@ -44,6 +49,10 @@ class EditDeudaActivity : AppCompatActivity() {
         etCantidad = findViewById(R.id.etCantidad)
         etFecha = findViewById(R.id.etFecha)
         etFechaVenc = findViewById(R.id.etFechaVenc)
+
+        tilNombre = findViewById(R.id.tilNombreDeuda)
+        tilFecha = findViewById(R.id.tilFechaDeuda)
+        tilFechaVenc = findViewById(R.id.tilFechaVencDeuda)
 
         accion = intent.getStringExtra("ACCION") ?: "presto"
         debtId = intent.getStringExtra("DEBT_ID") ?: ""
@@ -114,7 +123,20 @@ class EditDeudaActivity : AppCompatActivity() {
     private fun guardar() {
         val uid = auth.currentUser?.uid ?: return
         val data = mutableMapOf<String, Any>()
+
+        tilNombre.error = null
+        tilFecha.error = null
+        tilFechaVenc.error = null
+        tilNombre.isErrorEnabled = false
+        tilFecha.isErrorEnabled = false
+        tilFechaVenc.isErrorEnabled = false
+
         val nombreEdit = etNombre.text?.toString()?.trim().orEmpty()
+        if (nombreEdit.isBlank()) {
+            tilNombre.isErrorEnabled = true
+            tilNombre.error = "Ingrese un nombre"
+            return
+        }
         if (accion == "presto") {
             data["nombrePresto"] = nombreEdit
             data["nombre"] = nombreEdit
@@ -127,12 +149,24 @@ class EditDeudaActivity : AppCompatActivity() {
         val f = etFecha.text?.toString()?.trim().orEmpty()
         if (f.isNotBlank()) {
             val parsed = parseFechaToTimestamp(f)
-            if (parsed != null) data["fecha"] = parsed
+            if (parsed != null) {
+                data["fecha"] = parsed
+            } else {
+                tilFecha.isErrorEnabled = true
+                tilFecha.error = "Formato inválido (dd/MM/yyyy o yyyy-MM-dd)"
+                return
+            }
         }
         val fv = etFechaVenc.text?.toString()?.trim().orEmpty()
         if (fv.isNotBlank()) {
             val parsedV = parseFechaToTimestamp(fv)
-            if (parsedV != null) data["fechaVencimiento"] = parsedV
+            if (parsedV != null) {
+                data["fechaVencimiento"] = parsedV
+            } else {
+                tilFechaVenc.isErrorEnabled = true
+                tilFechaVenc.error = "Formato inválido (dd/MM/yyyy o yyyy-MM-dd)"
+                return
+            }
         }
 
         db.collection("accounts").document(uid)

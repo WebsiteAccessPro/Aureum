@@ -2,7 +2,6 @@ package com.example.aureum1.controller.activities
 
 import android.os.Bundle
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -77,9 +76,13 @@ class CrearDeudaActivity : AppCompatActivity() {
             spCuenta.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) spCuenta.showDropDown() }
 
             val label = findViewById<TextView>(R.id.tvLabelCantidad)
+            val mInit = monedaPorCuenta[spCuenta.text.toString()] ?: "PEN"
+            val mInitLabel = if (mInit.equals("PEN", true)) "SOL" else mInit
+            label.text = "Cantidad en $mInitLabel"
             spCuenta.setOnItemClickListener { _, _, _, _ ->
                 val m = monedaPorCuenta[spCuenta.text.toString()] ?: "PEN"
-                label.text = "Cantidad en $m"
+                val mLabel = if (m.equals("PEN", true)) "SOL" else m
+                label.text = "Cantidad en $mLabel"
             }
         }
 
@@ -120,7 +123,7 @@ class CrearDeudaActivity : AppCompatActivity() {
                 tvCantidad.text = if (cur == "0" && t != ".") t else cur + t
             }
         }
-        findViewById<ImageButton>(R.id.btnBackspace).setOnClickListener {
+        findViewById<Button>(R.id.btnBack).setOnClickListener {
             val cur = tvCantidad.text.toString()
             tvCantidad.text = if (cur.length <= 1) "0" else cur.dropLast(1)
         }
@@ -218,7 +221,7 @@ class CrearDeudaActivity : AppCompatActivity() {
         val tv = findViewById<TextView>(R.id.tvPlaceholderAccion)
         val op = spAccion.text.toString().trim()
         if (op.equals("Reembolsar deuda", true) && montoDeudaActual > 0.0) {
-            val labelMon = if (monedaDeuda.equals("PEN", true)) "PEN" else monedaDeuda
+            val labelMon = if (monedaDeuda.equals("PEN", true)) "SOL" else monedaDeuda
             val nf = java.text.NumberFormat.getNumberInstance(java.util.Locale.getDefault()).apply {
                 minimumFractionDigits = 2
                 maximumFractionDigits = 2

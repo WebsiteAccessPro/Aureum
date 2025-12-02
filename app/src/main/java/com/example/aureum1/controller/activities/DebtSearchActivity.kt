@@ -66,7 +66,14 @@ class DebtSearchActivity : AppCompatActivity() {
                 mergeClosed(null, withAccion)
             }
         } else {
-            adapterActivas = DebtAdapter(emptyList(), emptyMap(), "presto")
+            adapterActivas = DebtAdapter(
+                emptyList(),
+                emptyMap(),
+                "presto",
+                onAddRegistroClick = null,
+                onItemClick = null,
+                showAddCta = false
+            )
             rvResultados.adapter = adapterActivas
             accountRepo.subscribeAccountsInfoByName(uid) { info ->
                 adapterActivas?.updateAccountsInfo(info)

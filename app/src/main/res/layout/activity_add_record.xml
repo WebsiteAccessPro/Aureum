@@ -4,188 +4,252 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/aureum_beige">
+    android:background="@color/aureum_cream">
 
-    <!-- Encabezado con botones arriba -->
-    <LinearLayout
+    <!-- AppBar personalizada -->
+    <com.google.android.material.appbar.AppBarLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:weightSum="1"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="8dp">
+        android:background="@color/aureum_gold"
+        app:elevation="4dp">
 
-        <ImageView
-            android:id="@+id/btnClose"
-            android:layout_width="45dp"
-            android:layout_height="24dp"
-            android:layout_weight="0"
-            android:src="@drawable/ic_close_small"
-            app:tint="@color/black" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <ImageView
-            android:id="@+id/btnCheck"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_check"
-            app:tint="@color/black"
-            android:layout_gravity="end" />
-    </LinearLayout>
-
-    <!-- Pestañas: Ingresos, Gasto, Transferencia -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="8dp"
-        android:paddingBottom="4dp">
-
-        <Button
-            android:id="@+id/btnIngreso"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/PlainButton"
-            android:text="INGRESOS"
-            android:textSize="13sp"
-            android:textColor="@color/tab_text_selector"
-            android:background="@drawable/bg_tab_selector"
-            android:layout_marginHorizontal="4dp" />
-
-        <Button
-            android:id="@+id/btnGasto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/PlainButton"
-            android:text="GASTO"
-            android:textSize="13sp"
-            android:textColor="@color/tab_text_selector"
-            android:background="@drawable/bg_tab_selector"
-            android:layout_marginHorizontal="4dp" />
-
-        <Button
-            android:id="@+id/btnTransferencia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/PlainButton"
-            android:text="TRANSFERENCIA"
-            android:textSize="13sp"
-            android:textColor="@color/tab_text_selector"
-            android:background="@drawable/bg_tab_selector"
-            android:layout_marginHorizontal="4dp" />
-    </LinearLayout>
-
-    <!-- Monto -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:gravity="center_vertical"
-        android:background="@color/aureum_beige"
-        android:orientation="horizontal">
-
-        <!-- Contenedor de monto y advertencia -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="start|center_vertical"
-            android:orientation="vertical"
-            android:paddingStart="20dp">
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:background="@color/aureum_gold">
 
-            <!-- Fila del monto (moneda fija a la derecha) -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <!-- X a la izquierda -->
+            <ImageView
+                android:id="@+id/btnClose"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_close_small"
+                app:tint="@color/black"
+                android:contentDescription="Cerrar" />
 
-                <TextView
-                    android:id="@+id/tvSigno"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="+"
-                    android:textColor="@color/black"
-                    android:textSize="64sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvMoneda"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="PEN"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:paddingHorizontal="6dp"
-                    android:paddingVertical="2dp"
-                    android:background="@drawable/bg_tab_selector"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackgroundBorderless"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvMonto"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="72sp"
-                    android:maxLines="1"
-                    app:layout_constraintStart_toEndOf="@id/tvSigno"
-                    app:layout_constraintEnd_toStartOf="@id/tvMoneda"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!-- Advertencia dinámica de saldo insuficiente -->
+            <!-- Título CENTRADO -->
             <TextView
-                android:id="@+id/tvMontoWarning"
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Nuevo Registro"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <!-- Check a la derecha -->
+            <ImageView
+                android:id="@+id/btnCheck"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_check"
+                app:tint="@color/black"
+                android:contentDescription="Guardar" />
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@android:color/transparent"/>
+
+    <!-- Contenedor de pestañas -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
+        app:strokeColor="@color/aureum_border"
+        app:strokeWidth="1dp"
+        app:cardBackgroundColor="@color/aureum_beige">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="4dp">
+
+            <Button
+                android:id="@+id/btnIngreso"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textColor="@color/red"
-                android:textSize="12sp"
-                android:visibility="gone"/>
+                style="@style/PlainButton"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="INGRESOS"
+                android:textSize="13sp"
+                android:textColor="@color/tab_text_selector"
+                android:background="@drawable/bg_tab_selector"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginHorizontal="4dp"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp" />
+
+            <Button
+                android:id="@+id/btnGasto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/PlainButton"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="GASTO"
+                android:textSize="13sp"
+                android:textColor="@color/tab_text_selector"
+                android:background="@drawable/bg_tab_selector"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginHorizontal="4dp"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp" />
+
+            <Button
+                android:id="@+id/btnTransferencia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/PlainButton"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="TRANSFERENCIA"
+                android:textSize="13sp"
+                android:textColor="@color/tab_text_selector"
+                android:background="@drawable/bg_tab_selector"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginHorizontal="4dp"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp" />
         </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-        <!-- Botón medio círculo -->
-        <LinearLayout
-            android:id="@+id/btnNextContainer"
-            android:layout_width="100dp"
-            android:layout_height="200dp"
-            android:layout_gravity="end|center_vertical"
-            android:background="@drawable/bg_half_circle_right"
-            android:gravity="center"
-            android:translationX="18dp">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@android:color/transparent"/>
 
-            <ImageView
-                android:id="@+id/btnNext"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/flechaizquierda"
-                app:tint="@color/black" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- Cuenta y Categoría -->
-    <LinearLayout
+    <!-- Monto + Cuenta/Categoría en una sola tarjeta -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:paddingBottom="8dp">
+        app:cardCornerRadius="18dp"
+        app:cardElevation="6dp"
+        app:strokeColor="@color/aureum_border"
+        app:strokeWidth="1dp"
+        app:cardBackgroundColor="@color/aureum_beige">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Monto -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- Contenedor de monto y advertencia -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start|center_vertical"
+                    android:orientation="vertical"
+                    android:paddingStart="20dp">
+
+                    <!-- Fila del monto (moneda fija a la derecha) -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tvSigno"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+"
+                            android:textColor="@color/black"
+                            android:textSize="48sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvMoneda"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PEN"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="6dp"
+                            android:background="@drawable/bg_biometric_pill"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tvMonto"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textSize="54sp"
+                            android:maxLines="1"
+                            app:layout_constraintStart_toEndOf="@id/tvSigno"
+                            app:layout_constraintEnd_toStartOf="@id/tvMoneda"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- Advertencia dinámica de saldo insuficiente -->
+                    <TextView
+                        android:id="@+id/tvMontoWarning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/red"
+                        android:textSize="12sp"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+                <!-- Botón medio círculo -->
+                <LinearLayout
+                    android:id="@+id/btnNextContainer"
+                    android:layout_width="100dp"
+                    android:layout_height="160dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:background="@drawable/bg_half_circle_right"
+                    android:gravity="center"
+                    android:translationX="18dp">
+
+                    <ImageView
+                        android:id="@+id/btnNext"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/flechaizquierda"
+                        app:tint="@color/black" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Cuenta y Categoría -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="8dp">
 
         <!-- Columna Cuenta -->
         <LinearLayout
@@ -209,12 +273,15 @@
             <TextView
                 android:id="@+id/tvCuenta"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
+                android:minHeight="44dp"
                 android:gravity="center"
                 android:text=""
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:background="@color/aureum_cream_dark"/>
+                android:background="@drawable/bg_biometric_pill"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"/>
         </LinearLayout>
 
         <!-- Columna Categoría -->
@@ -239,23 +306,41 @@
             <TextView
                 android:id="@+id/tvCategoria"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
+                android:minHeight="44dp"
                 android:gravity="center"
                 android:text="Seleccionar"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:background="@color/aureum_cream_dark"/>
+                android:background="@drawable/bg_biometric_pill"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"/>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-    <!-- Calculadora -->
-    <LinearLayout
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@android:color/transparent"/>
+
+    <!-- Calculadora en tarjeta con sombra -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.8"
-        android:orientation="vertical"
-        android:background="@color/black"
-        android:padding="8dp">
+        app:cardCornerRadius="18dp"
+        app:cardElevation="6dp"
+        app:strokeColor="@color/aureum_border"
+        app:strokeWidth="1dp"
+        app:cardBackgroundColor="@color/aureum_beige">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="8dp">
 
         <!-- Fila 1 -->
         <LinearLayout
@@ -312,6 +397,7 @@
             <Button android:id="@+id/btnBack" style="@style/CalcBtn" android:text="←"/>
             <Button android:id="@+id/btnEqual" style="@style/CalcBtn" android:text="="/>
         </LinearLayout>
-    </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

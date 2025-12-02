@@ -4,7 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aureum1.R
 
@@ -28,8 +29,11 @@ class WalletSelectRecordActivity : AppCompatActivity() {
 
         defaultAccion = intent?.getStringExtra(EXTRA_DEFAULT_ACCION) ?: "presto"
 
-        val btnSeleccionar = findViewById<Button>(R.id.btnSeleccionar)
-        val btnOmitir = findViewById<TextView>(R.id.btnOmitir)
+        val toolbar = findViewById<MaterialToolbar>(R.id.toolbarWalletSelect)
+        toolbar.setNavigationOnClickListener { finish() }
+
+        val btnSeleccionar = findViewById<MaterialButton>(R.id.btnSeleccionar)
+        val btnOmitir = findViewById<MaterialButton>(R.id.btnOmitir)
 
         btnSeleccionar.setOnClickListener {
             val i = Intent(this, SeleccionRegistroDeudaActivity::class.java)

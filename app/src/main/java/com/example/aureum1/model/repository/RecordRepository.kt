@@ -26,23 +26,24 @@ class RecordRepository(private val db: FirebaseFirestore = FirebaseFirestore.get
                     onChange(emptyList())
                     return@addSnapshotListener
                 }
-                val listRaw = snaps.documents.mapNotNull { it.data }
                 val list = mutableListOf<Map<String, Any?>>()
-                for (m in listRaw) {
-                    val t = (m["tipo"] as? String).orEmpty()
+                for (doc in snaps.documents) {
+                    val data = doc.data ?: continue
+                    val base = data.toMutableMap().apply { put("idDoc", doc.id) }
+                    val t = (base["tipo"] as? String).orEmpty()
                     if (t.equals("Transferencia", true)) {
-                        val extDirection = (m["extDirection"] as? String).orEmpty()
+                        val extDirection = (base["extDirection"] as? String).orEmpty()
                         if (extDirection.isNotEmpty()) {
-                            val single = m.toMutableMap().apply { put("direction", extDirection) }
+                            val single = base.toMutableMap().apply { put("direction", extDirection) }
                             list.add(single)
                         } else {
-                            val inn = m.toMutableMap().apply { put("direction", "in") }
-                            val out = m.toMutableMap().apply { put("direction", "out") }
+                            val inn = base.toMutableMap().apply { put("direction", "in") }
+                            val out = base.toMutableMap().apply { put("direction", "out") }
                             list.add(inn)
                             list.add(out)
                         }
                     } else {
-                        list.add(m)
+                        list.add(base)
                     }
                 }
                 onChange(list)
@@ -58,17 +59,18 @@ class RecordRepository(private val db: FirebaseFirestore = FirebaseFirestore.get
             .orderBy("createdAt", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { snaps ->
-                val listRaw = snaps.documents.mapNotNull { it.data }
                 val list = mutableListOf<Map<String, Any?>>()
-                for (m in listRaw) {
-                    val t = (m["tipo"] as? String).orEmpty()
+                for (doc in snaps.documents) {
+                    val data = doc.data ?: continue
+                    val base = data.toMutableMap().apply { put("idDoc", doc.id) }
+                    val t = (base["tipo"] as? String).orEmpty()
                     if (t.equals("Transferencia", true)) {
-                        val inn = m.toMutableMap().apply { put("direction", "in") }
-                        val out = m.toMutableMap().apply { put("direction", "out") }
+                        val inn = base.toMutableMap().apply { put("direction", "in") }
+                        val out = base.toMutableMap().apply { put("direction", "out") }
                         list.add(inn)
                         list.add(out)
                     } else {
-                        list.add(m)
+                        list.add(base)
                     }
                 }
                 onSuccess(list)

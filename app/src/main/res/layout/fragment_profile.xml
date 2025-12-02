@@ -78,31 +78,24 @@
                         android:textSize="13sp"
                         android:layout_marginBottom="6dp" />
 
-                    <TextView
-                        android:id="@+id/tvProfileHint"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Gestor de finanzas personales"
-                        android:textColor="@color/aureumOnCard"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="12dp" />
-
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnEditProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="44dp"
+                        android:layout_width="180dp"
+                        android:layout_height="48dp"
                         android:text="Editar perfil"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
-                        app:backgroundTint="@color/aureum_gold"
-                        app:cornerRadius="22dp"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp"
+                        app:cornerRadius="24dp"
                         app:icon="@drawable/ic_edit"
                         app:iconTint="@color/white"
                         app:iconGravity="textStart"
-                        app:iconPadding="8dp"
-                        app:iconSize="16dp"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="12dp" />
+                        app:iconPadding="10dp"
+                        app:iconSize="18dp"
+                        android:paddingHorizontal="40dp"
+                        android:elevation="6dp"
+                        android:stateListAnimator="@null" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -111,7 +104,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="10dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="6dp"
                 app:cardBackgroundColor="@color/white">
@@ -120,7 +113,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="14dp">
+                    android:padding="12dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -129,6 +122,12 @@
                         android:textColor="@color/md_hint"
                         android:textStyle="bold"
                         android:textSize="13sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/aureum_border"
+                        android:layout_marginVertical="6dp"/>
 
                     <TextView
                         android:id="@+id/tvUserPhone"
@@ -143,7 +142,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="10dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="6dp"
                 app:cardBackgroundColor="@color/white">
@@ -152,7 +151,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="14dp">
+                    android:padding="12dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -161,6 +160,12 @@
                         android:textColor="@color/md_hint"
                         android:textStyle="bold"
                         android:textSize="13sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/aureum_border"
+                        android:layout_marginVertical="6dp"/>
 
                     <TextView
                         android:id="@+id/tvUserGender"
@@ -175,7 +180,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="10dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="6dp"
                 app:cardBackgroundColor="@color/white">
@@ -184,7 +189,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="14dp">
+                    android:padding="12dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -193,6 +198,12 @@
                         android:textColor="@color/md_hint"
                         android:textStyle="bold"
                         android:textSize="13sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/aureum_border"
+                        android:layout_marginVertical="6dp"/>
 
                     <TextView
                         android:id="@+id/tvUserBirthDate"
@@ -207,7 +218,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="6dp"
                 app:cardBackgroundColor="@color/white">
@@ -216,7 +227,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="14dp">
+                    android:padding="12dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -225,6 +236,12 @@
                         android:textColor="@color/md_hint"
                         android:textStyle="bold"
                         android:textSize="13sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/aureum_border"
+                        android:layout_marginVertical="6dp"/>
 
                     <TextView
                         android:id="@+id/tvUserEmailDetail"
@@ -241,14 +258,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Eliminar cuenta permanentemente"
-                android:textColor="@color/red"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="14sp"
-                android:layout_marginTop="0dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="12dp" />
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_delete_account" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

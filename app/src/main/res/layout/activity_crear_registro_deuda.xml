@@ -4,103 +4,183 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/aureum_cream">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarCrearDeuda"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/aureum_beige"
-        android:title="Crear registro de deudas"
+        android:background="@color/aureum_gold"
+        app:title="Crear registro de deudas"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/ToolbarTitleSmall"
         android:titleTextColor="@color/aureum_text"
         app:navigationIcon="@drawable/ic_close_small"/>
 
-    <LinearLayout
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@android:color/transparent"/>
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        app:cardCornerRadius="18dp"
+        app:cardElevation="4dp"
+        app:strokeColor="@color/aureum_border"
+        app:strokeWidth="1dp"
+        app:cardBackgroundColor="@color/aureum_beige">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Acción de deuda"
-            android:textColor="@color/aureum_text"
-            android:textSize="14sp"/>
-        <com.google.android.material.textfield.MaterialAutoCompleteTextView
-            android:id="@+id/spAccionDeuda"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            android:hint="Selecciona"/>
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <Space android:layout_width="match_parent" android:layout_height="8dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Acción"
+                android:textColor="@color/aureum_text"
+                android:textStyle="bold"
+                android:textSize="13sp"/>
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/spAccionDeuda"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:hint="Seleccionar"
+                android:background="@drawable/bg_biometric_pill"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cuenta"
-            android:textColor="@color/aureum_text"
-            android:textSize="14sp"/>
-        <com.google.android.material.textfield.MaterialAutoCompleteTextView
-            android:id="@+id/spCuenta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            android:hint="Selecciona"/>
+            <Space android:layout_width="match_parent" android:layout_height="10dp"/>
 
-        <Space android:layout_width="match_parent" android:layout_height="12dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cuenta"
+                android:textColor="@color/aureum_text"
+                android:textStyle="bold"
+                android:textSize="13sp"/>
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/spCuenta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:hint="Seleccionar"
+                android:background="@drawable/bg_biometric_pill"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"/>
 
-        <TextView
-            android:id="@+id/tvLabelCantidad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cantidad"
-            android:textColor="@color/aureum_text"
-            android:textSize="14sp"/>
-        <TextView
-            android:id="@+id/tvCantidad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textStyle="bold"
-            android:textSize="22sp"
-            android:paddingVertical="6dp"/>
-        <TextView
-            android:id="@+id/tvPlaceholderAccion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/aureum_text"
-            android:alpha="0.7"
-            android:textSize="13sp"
-            android:paddingBottom="4dp"/>
-    </LinearLayout>
+            <Space android:layout_width="match_parent" android:layout_height="12dp"/>
 
-    <GridLayout
-        android:id="@+id/keypad"
+            <TextView
+                android:id="@+id/tvLabelCantidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cantidad"
+                android:textColor="@color/aureum_text"
+                android:textSize="13sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/tvCantidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:background="@drawable/bg_biometric_pill"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:paddingVertical="8dp"/>
+            <TextView
+                android:id="@+id/tvPlaceholderAccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/aureum_text"
+                android:alpha="0.7"
+                android:textSize="12sp"
+                android:paddingBottom="4dp"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@android:color/transparent"/>
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="16dp"
-        android:columnCount="3"
-        android:rowCount="4"
-        android:background="#555555">
+        android:layout_weight="0.8"
+        app:cardCornerRadius="18dp"
+        app:cardElevation="6dp"
+        app:strokeColor="@color/aureum_border"
+        app:strokeWidth="1dp"
+        app:cardBackgroundColor="@color/aureum_beige">
 
-        <!-- Teclas 1-9 -->
-        <Button android:id="@+id/btn1" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="1"/>
-        <Button android:id="@+id/btn2" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="2"/>
-        <Button android:id="@+id/btn3" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="3"/>
-        <Button android:id="@+id/btn4" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="4"/>
-        <Button android:id="@+id/btn5" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="5"/>
-        <Button android:id="@+id/btn6" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="6"/>
-        <Button android:id="@+id/btn7" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="7"/>
-        <Button android:id="@+id/btn8" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="8"/>
-        <Button android:id="@+id/btn9" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="9"/>
-        <!-- 0, punto decimal y retroceso -->
-        <Button android:id="@+id/btn0" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="0"/>
-        <Button android:id="@+id/btnDot" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:text="."/>
-        <ImageButton android:id="@+id/btnBackspace" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_rowWeight="1" android:background="@android:color/transparent" android:src="@drawable/eliminar" android:contentDescription="Borrar"/>
-    </GridLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <!-- Fila 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button android:id="@+id/btn7" style="@style/CalcBtn" android:text="7"/>
+                <Button android:id="@+id/btn8" style="@style/CalcBtn" android:text="8"/>
+                <Button android:id="@+id/btn9" style="@style/CalcBtn" android:text="9"/>
+                <Button android:id="@+id/btnMul" style="@style/CalcBtn" android:text="×"/>
+            </LinearLayout>
+
+            <!-- Fila 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button android:id="@+id/btn4" style="@style/CalcBtn" android:text="4"/>
+                <Button android:id="@+id/btn5" style="@style/CalcBtn" android:text="5"/>
+                <Button android:id="@+id/btn6" style="@style/CalcBtn" android:text="6"/>
+                <Button android:id="@+id/btnPlus" style="@style/CalcBtn" android:text="+"/>
+            </LinearLayout>
+
+            <!-- Fila 3 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button android:id="@+id/btn1" style="@style/CalcBtn" android:text="1"/>
+                <Button android:id="@+id/btn2" style="@style/CalcBtn" android:text="2"/>
+                <Button android:id="@+id/btn3" style="@style/CalcBtn" android:text="3"/>
+                <Button android:id="@+id/btnMinus" style="@style/CalcBtn" android:text="−"/>
+            </LinearLayout>
+
+            <!-- Fila 4 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button android:id="@+id/btnDot" style="@style/CalcBtn" android:text="."/>
+                <Button android:id="@+id/btn0" style="@style/CalcBtn" android:text="0"/>
+                <Button android:id="@+id/btnBack" style="@style/CalcBtn" android:text="←"/>
+                <Button android:id="@+id/btnEqual" style="@style/CalcBtn" android:text="="/>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

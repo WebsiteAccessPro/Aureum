@@ -11,22 +11,24 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingHorizontal="0dp"
-        android:paddingVertical="12dp"
+        android:paddingVertical="14dp"
         android:gravity="center_horizontal">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#FFFFFF"
-            app:cardElevation="4dp"
-            app:cardCornerRadius="14dp"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="18dp"
+            app:strokeColor="@color/aureum_gold"
+            app:strokeWidth="1dp"
             android:minHeight="360dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="18dp"
+                android:padding="22dp"
                 android:gravity="center_horizontal">
 
                 <!-- ICONO DE ÉXITO -->
@@ -47,7 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="¡Cuenta Creada!"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="#5B4E2D"
                     android:layout_marginBottom="12dp" />
@@ -81,7 +83,7 @@
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

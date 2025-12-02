@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.aureum1.R
 
 class CuentaAdapter(
-    private val items: List<Map<String, Any?>>,
+    private val items: List<Map<String, Any?>>, 
     private val onOpcionesClick: (Map<String, Any?>) -> Unit
 ) : RecyclerView.Adapter<CuentaAdapter.VH>() {
 
@@ -32,6 +32,6 @@ class CuentaAdapter(
         holder.tvNombre.text = (item["nombre"] as? String).orEmpty()
         holder.tvTipo.text   = (item["tipo"] as? String).orEmpty()
         holder.btnOpciones.setOnClickListener { onOpcionesClick(item) }
-        holder.itemView.setOnClickListener { /* NO abrir editar aquí */ }
+        holder.itemView.setOnClickListener { onOpcionesClick(item) }
     }
 }

@@ -220,24 +220,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun obtenerUbicacion() {
-        fused.lastLocation.addOnSuccessListener { location ->
-            if (location != null) {
-                procesarUbicacion(location.latitude, location.longitude)
-            } else {
-                // Solicita una actualización activa si lastLocation es nulo
-                locationCallback = object : com.google.android.gms.location.LocationCallback() {
-                    override fun onLocationResult(result: com.google.android.gms.location.LocationResult) {
-                        val loc = result.lastLocation
-                        if (loc != null) {
-                            procesarUbicacion(loc.latitude, loc.longitude)
-                            // Detener más actualizaciones para evitar consumo innecesario
-                            fused.removeLocationUpdates(this)
-                            locationCallback = null
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Permiso de ubicación requerido", Toast.LENGTH_SHORT).show()
+            return
+        }
+        try {
+            fused.lastLocation.addOnSuccessListener { location ->
+                if (location != null) {
+                    procesarUbicacion(location.latitude, location.longitude)
+                } else {
+                    locationCallback = object : com.google.android.gms.location.LocationCallback() {
+                        override fun onLocationResult(result: com.google.android.gms.location.LocationResult) {
+                            val loc = result.lastLocation
+                            if (loc != null) {
+                                procesarUbicacion(loc.latitude, loc.longitude)
+                                fused.removeLocationUpdates(this)
+                                locationCallback = null
+                            }
                         }
                     }
+                    fused.requestLocationUpdates(highAccReq, locationCallback as com.google.android.gms.location.LocationCallback, mainLooper)
                 }
-                fused.requestLocationUpdates(highAccReq, locationCallback as com.google.android.gms.location.LocationCallback, mainLooper)
             }
+        } catch (se: SecurityException) {
+            Toast.makeText(this, "Sin permisos de ubicación", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -94,7 +94,8 @@ class DebtRepository(private val db: FirebaseFirestore = FirebaseFirestore.getIn
             .collection("items").document(debtId)
         db.runTransaction { tx ->
             val snap = tx.get(debtRef)
-            val current = (snap.getDouble("monto") ?: 0.0) + delta
+            val currentRaw = (snap.getDouble("monto") ?: 0.0) + delta
+            val current = if (currentRaw < 0.0) 0.0 else currentRaw
             tx.update(debtRef, mapOf(
                 "monto" to current,
                 "fecha" to (movement["fecha"] ?: com.google.firebase.Timestamp.now())

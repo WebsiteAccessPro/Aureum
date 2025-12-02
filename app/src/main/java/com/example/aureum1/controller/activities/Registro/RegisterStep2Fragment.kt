@@ -8,11 +8,14 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import com.example.aureum1.R
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.button.MaterialButton
+import androidx.appcompat.content.res.AppCompatResources
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -59,12 +62,68 @@ class RegisterStep2Fragment : Fragment() {
         
         setupGenderDropdown()
         setupDatePicker()
-        
+
         btnNext.setOnClickListener {
             if (validateAndProceed()) {
                 // Llamar directamente al Activity para avanzar
                 (activity as? RegisterActivity)?.handleNextClick()
             }
+        }
+
+        etName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) { tilName.error = null }
+        })
+        etPhone.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) { tilPhone.error = null }
+        })
+        actvGender.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) { tilGender.error = null }
+        })
+        etBirthDate.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) { tilBirthDate.error = null }
+        })
+
+        tilName.isHintAnimationEnabled = false
+        tilPhone.isHintAnimationEnabled = false
+        tilGender.isHintAnimationEnabled = false
+        tilBirthDate.isHintAnimationEnabled = false
+
+        view.visibility = View.INVISIBLE
+        view.post {
+            tilName.startIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_person_24)
+            tilPhone.startIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_phone_24)
+            tilGender.startIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_person_24)
+            tilBirthDate.startIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_calendar_24)
+
+            tilName.isStartIconVisible = true
+            tilPhone.isStartIconVisible = true
+            tilGender.isStartIconVisible = true
+            tilBirthDate.isStartIconVisible = true
+
+            etName.setText(" ")
+            etPhone.setText(" ")
+            actvGender.setText(" ", false)
+            etBirthDate.setText(" ")
+
+            etName.setText("")
+            etPhone.setText("")
+            actvGender.setText("", false)
+            etBirthDate.setText("")
+
+            tilName.isHintAnimationEnabled = true
+            tilPhone.isHintAnimationEnabled = true
+            tilGender.isHintAnimationEnabled = true
+            tilBirthDate.isHintAnimationEnabled = true
+
+            view.visibility = View.VISIBLE
         }
     }
     
@@ -131,40 +190,40 @@ class RegisterStep2Fragment : Fragment() {
         
         var isValid = true
         
-        if (name.isEmpty()) {
-            tilName.error = "Ingresa tu nombre"
+        val nameOk = Regex("^[A-Za-zÁÉÍÓÚáéíóúÑñ'\\-\\s]{3,}$").matches(name) && name.contains(" ")
+        if (!nameOk) {
+            tilName.error = "Nombre y apellido válidos"
             isValid = false
         } else {
             tilName.error = null
         }
         
-        if (phone.isEmpty()) {
-            tilPhone.error = "Ingresa tu teléfono"
-            isValid = false
-        } else if (phone.length < 9) {
-            tilPhone.error = "Número inválido"
+        val phoneDigits = Regex("^[0-9]{9,15}$").matches(phone)
+        if (!phoneDigits) {
+            tilPhone.error = "9 a 15 dígitos, sin espacios"
             isValid = false
         } else {
             tilPhone.error = null
         }
         
-        if (gender.isEmpty()) {
-            tilGender.error = "Selecciona tu género"
+        val allowed = setOf("Masculino", "Femenino", "Prefiero no decir")
+        if (!allowed.contains(gender)) {
+            tilGender.error = "Selecciona una opción"
             isValid = false
         } else {
             tilGender.error = null
         }
         
-        if (birthDate.isEmpty()) {
-            tilBirthDate.error = "Selecciona tu fecha de nacimiento"
+        val ageCalc = calculateAgeFromBirthDate(birthDate)
+        if (birthDate.isEmpty() || ageCalc < 18 || ageCalc > 100) {
+            tilBirthDate.error = "Edad 18-100 años"
             isValid = false
         } else {
             tilBirthDate.error = null
         }
         
         if (isValid) {
-            val age = calculateAgeFromBirthDate(birthDate)
-            onValidationComplete?.invoke(name, phone, gender, birthDate, age)
+            onValidationComplete?.invoke(name, phone, gender, birthDate, ageCalc)
         }
         
         return isValid

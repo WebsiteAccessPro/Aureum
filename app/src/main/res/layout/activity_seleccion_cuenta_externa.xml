@@ -10,14 +10,20 @@
     <!-- AppBar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/aureum_gold"
+        app:liftOnScroll="false"
+        android:stateListAnimator="@null">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbarSeleccionCuentaExterna"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:navigationIcon="@drawable/flechaizquierda2"
-            app:title="Seleccionar cuenta de destino" />
+            app:navigationIcon="@drawable/ic_close_small"
+            app:titleCentered="true"
+            app:titleTextColor="@color/aureum_text"
+            app:title="Seleccionar Transferencia"
+            app:titleTextAppearance="@style/ToolbarTitleSmall"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -28,18 +34,20 @@
         android:layout_height="match_parent"
         android:padding="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@color/aureum_cream"
         tools:listitem="@layout/item_cuenta_ajustes" />
 
-    <!-- FloatingActionButton con ícono -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabEnviarOtroUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:text="Transferir"
+        android:textColor="@color/black"
         android:contentDescription="Enviar a otro usuario"
-        android:src="@drawable/transfer"
-        app:tint="@color/black"
-        app:backgroundTint="@color/md_theme_primary"
+        app:icon="@drawable/transfer"
+        app:iconTint="@color/black"
+        app:backgroundTint="@color/aureum_gold"
         app:layout_anchor="@id/recyclerSeleccionCuentaExterna"
         app:layout_anchorGravity="bottom|end" />
 

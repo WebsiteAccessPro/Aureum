@@ -5,7 +5,7 @@
         android:id="@+id/action_delete"
         android:title="Eliminar"
         android:icon="@drawable/eliminar"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_forgive"
         android:title="Perdonar deuda"
@@ -22,5 +22,13 @@
         android:id="@+id/action_save"
         android:title="Guardar"
         android:icon="@drawable/ic_check"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_save_overflow"
+        android:title="Guardar modificación"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_delete_overflow"
+        android:title="Eliminar"
+        app:showAsAction="never" />
 </menu>

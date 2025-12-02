@@ -2,6 +2,8 @@ package com.example.aureum1.controller.activities
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.FrameLayout
@@ -15,6 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.example.aureum1.Backend.AccountService
 import com.google.firebase.firestore.FirebaseFirestore
@@ -35,24 +38,38 @@ class NuevaCuentaActivity : AppCompatActivity() {
         val etNombre = findViewById<TextInputEditText>(R.id.etNombreCuenta)
         val etNumero = findViewById<TextInputEditText>(R.id.etNumeroCuenta)
         val etValorInicial = findViewById<TextInputEditText>(R.id.etValorInicial)
+        val tilNombre = findViewById<TextInputLayout>(R.id.tilNombre)
+        val tilNumero = findViewById<TextInputLayout>(R.id.tilNumero)
+        val tilTipo = findViewById<TextInputLayout>(R.id.tilTipo)
+        val tilValor = findViewById<TextInputLayout>(R.id.tilValorInicial)
+        val tilMoneda = findViewById<TextInputLayout>(R.id.tilMoneda)
 
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbarNuevaCuenta)
         toolbar.setNavigationOnClickListener { finish() }
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.action_guardar -> {
+                R.id.action_guardar, R.id.action_guardar_overflow -> {
                     guardarCuenta(
                         nombre = etNombre.text.toString().trim(),
                         tipo = tipoView.text.toString().trim(),
                         numero = etNumero.text.toString().trim(),
                         moneda = monedaView.text.toString().trim(),
-                        valorInicial = etValorInicial.text.toString().trim()
+                        valorInicial = etValorInicial.text.toString().trim(),
+                        tilNombre = tilNombre,
+                        tilNumero = tilNumero,
+                        tilTipo = tilTipo,
+                        tilValor = tilValor,
+                        tilMoneda = tilMoneda
                     )
                     true
                 }
                 else -> false
             }
         }
+
+        // Ocultar acción con icono y mostrar solo overflow
+        toolbar.menu.findItem(R.id.action_guardar)?.isVisible = false
+        toolbar.menu.findItem(R.id.action_guardar_overflow)?.isVisible = true
 
         val tipos = resources.getStringArray(R.array.tipos_cuenta)
         val monedas = resources.getStringArray(R.array.monedas_array)
@@ -66,19 +83,45 @@ class NuevaCuentaActivity : AppCompatActivity() {
         etValorInicial.showSoftInputOnFocus = false
         etValorInicial.setOnClickListener { showCalculator { etValorInicial.setText(it) } }
         etValorInicial.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) showCalculator { etValorInicial.setText(it) } }
+
+        // Limpiar errores al editar/seleccionar
+        etNombre.addTextChangedListener(simpleWatcher { tilNombre.error = null })
+        etNumero.addTextChangedListener(simpleWatcher { tilNumero.error = null })
+        etValorInicial.addTextChangedListener(simpleWatcher { tilValor.error = null })
+        tipoView.setOnItemClickListener { _, _, _, _ -> tilTipo.error = null }
+        monedaView.setOnItemClickListener { _, _, _, _ -> tilMoneda.error = null }
     }
 
-    private fun guardarCuenta(nombre: String, tipo: String, numero: String, moneda: String, valorInicial: String) {
+    private fun guardarCuenta(
+        nombre: String,
+        tipo: String,
+        numero: String,
+        moneda: String,
+        valorInicial: String,
+        tilNombre: TextInputLayout,
+        tilNumero: TextInputLayout,
+        tilTipo: TextInputLayout,
+        tilValor: TextInputLayout,
+        tilMoneda: TextInputLayout
+    ) {
         val user = auth.currentUser
         if (user == null) {
             Toast.makeText(this, "No hay usuario autenticado", Toast.LENGTH_SHORT).show()
             return
         }
 
-        if (nombre.isEmpty() || tipo.isEmpty() || moneda.isEmpty()) {
-            Toast.makeText(this, "Completa todos los campos obligatorios", Toast.LENGTH_SHORT).show()
-            return
-        }
+        // Validaciones
+        val valor = valorInicial.toDoubleOrNull() ?: -1.0
+        var ok = true
+        if (nombre.isEmpty()) { tilNombre.error = "Ingresa el nombre de la cuenta"; ok = false }
+        val onlyDigits = numero.all { it.isDigit() }
+        if (numero.isEmpty()) { tilNumero.error = "Ingresa el número"; ok = false }
+        else if (!onlyDigits) { tilNumero.error = "Solo números"; ok = false }
+        else if (numero.length != 20) { tilNumero.error = "Debe tener 20 dígitos"; ok = false }
+        if (tipo.isEmpty()) { tilTipo.error = "Selecciona el tipo"; ok = false }
+        if (moneda.isEmpty()) { tilMoneda.error = "Selecciona la moneda"; ok = false }
+        if (valor <= 0) { tilValor.error = "Debe ser mayor a 0"; ok = false }
+        if (!ok) return
 
         // 🔹 Creamos la estructura de la cuenta
         val nuevaCuenta = hashMapOf(
@@ -87,7 +130,7 @@ class NuevaCuentaActivity : AppCompatActivity() {
             "tipo" to tipo.ifEmpty { "Sin tipo" },
             "numero" to numero.ifEmpty { "" },
             "moneda" to moneda.ifEmpty { "USD" },
-            "valorInicial" to valorInicial.ifEmpty { "0" }
+            "valorInicial" to valor
         )
 
         // 🔹 Usar servicio backend para mutación (MVC: controlador delega al backend)
@@ -102,6 +145,12 @@ class NuevaCuentaActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error al guardar cuenta: ${e.message}", Toast.LENGTH_LONG).show()
             }
         )
+    }
+
+    private fun simpleWatcher(onChange: () -> Unit) = object: TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { onChange() }
+        override fun afterTextChanged(s: Editable?) {}
     }
 
     private fun showCalculator(onResult: (String) -> Unit) {

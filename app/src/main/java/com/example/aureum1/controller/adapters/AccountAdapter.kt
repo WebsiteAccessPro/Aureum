@@ -45,7 +45,7 @@ class AccountAdapter(
 
         fun bind(acc: Account) {
             tvNombre.text = acc.nombre
-            tvNumero.text = acc.numero
+            tvNumero.text = formatBlocks(acc.numero)
             tvValor.text  = String.Companion.format(Locale.getDefault(), "%s %,.2f", acc.moneda, acc.valor)
             val card = itemView as com.google.android.material.card.MaterialCardView
             val isSelected = selectedName?.equals(acc.nombre, true) == true
@@ -71,6 +71,11 @@ class AccountAdapter(
     fun setSelected(name: String?) {
         selectedName = name
         notifyDataSetChanged()
+    }
+
+    private fun formatBlocks(num: String?): String {
+        val clean = (num ?: "").replace("\\s+".toRegex(), "")
+        return if (clean.isEmpty()) "" else clean.chunked(4).joinToString(" ")
     }
 }
     private var selectedName: String? = null

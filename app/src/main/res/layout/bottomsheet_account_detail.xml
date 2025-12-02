@@ -4,8 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@color/aureumCard">
+    android:padding="20dp"
+    android:background="@drawable/bg_card_gradient"
+    android:elevation="6dp"
+    android:clipToPadding="false"
+    android:clipChildren="false">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,16 +18,16 @@
 
         <ImageView
             android:id="@+id/imgIconoCuenta"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:src="@drawable/ic_bank"
             android:background="@drawable/bg_circle_beige"
-            android:padding="10dp" />
+            android:padding="14dp" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -34,8 +37,9 @@
                 android:layout_height="wrap_content"
                 android:text="Nombre"
                 android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="@color/aureumOnCard" />
+                android:textSize="18sp"
+                android:textColor="@color/aureumOnCard"
+                android:letterSpacing="0.02" />
 
             <TextView
                 android:id="@+id/tvNumeroCuenta"
@@ -44,16 +48,21 @@
                 android:text="0000 0000 0000"
                 android:textSize="13sp"
                 android:textColor="@color/aureum_text"
-                android:alpha="0.8" />
+                android:alpha="0.9"
+                android:layout_marginTop="2dp"/>
 
             <TextView
                 android:id="@+id/tvTipoCuenta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tipo"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:textColor="@color/aureum_text"
-                android:alpha="0.8" />
+                android:alpha="0.95"
+                android:layout_marginTop="6dp"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="6dp"
+                android:background="@drawable/bg_campo_cuenta"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -61,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="12dp"
-        android:background="#1FA8A48A" />
+        android:background="@color/aureum_beige" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -113,13 +122,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/shape_chip"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:background="@drawable/bg_campo_cuenta"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="Cerrar"
-        android:textColor="@android:color/white"
+        android:textColor="@color/aureum_text"
         android:textStyle="bold" />
-
 </LinearLayout>

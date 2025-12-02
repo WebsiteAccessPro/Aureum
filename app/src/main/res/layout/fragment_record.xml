@@ -12,115 +12,125 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Título -->
         <TextView
             android:id="@+id/tvTitulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Registros"
-            android:textColor="@color/black"
+            android:textColor="@color/aureum_text"
             android:textStyle="bold"
             android:textSize="20sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp" />
 
-        <!-- Botón búsqueda -->
         <ImageView
             android:id="@+id/btnBuscar"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@android:drawable/ic_menu_search"
-            app:tint="@color/black"
+            app:tint="@color/aureum_text"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp" />
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="Buscar" />
 
-        <!-- Resumen -->
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/layoutResumen"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@id/tvTitulo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:strokeColor="@color/aureum_border"
+            app:strokeWidth="1dp"
+            app:cardBackgroundColor="@color/aureumCard">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:orientation="vertical"
+                android:padding="12dp">
 
-                <TextView
-                    android:id="@+id/tvResumenPeriodo"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Últimos 30 Días"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="14sp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvResumenPeriodo"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Últimos 30 Días"
+                        android:textColor="@color/aureum_text"
+                        android:textStyle="bold"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tvResumenMonto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PEN 0.00"
+                        android:textColor="@color/aureum_text"
+                        android:textStyle="bold"
+                        android:textSize="15sp" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tvResumenMonto"
+                    android:id="@+id/tvSemanaActual"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="S/. PEN 00.00"
-                    android:textColor="@color/black"
+                    android:layout_marginTop="4dp"
+                    android:text="SEMANA -"
+                    android:textColor="@color/aureum_gray"
                     android:textStyle="bold"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvSemanaActual"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="SEMANA -"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="13sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tvSaldoTotalAcumulado"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="Saldo PEN 00.00"
-                    android:textColor="@color/black"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/tvSaldoSemanaActual"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="PEN 00.00"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="13sp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:id="@+id/tvSaldoTotalAcumulado"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Saldo PEN 0.00"
+                        android:textColor="@color/aureum_gray"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tvSaldoSemanaActual"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PEN 0.00"
+                        android:textColor="@color/aureum_text"
+                        android:textStyle="bold"
+                        android:textSize="13sp" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Lista de registros -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerRegistros"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="8dp"
             android:clipToPadding="false"
-            android:paddingBottom="8dp"
+            android:paddingBottom="6dp"
             app:layout_constraintTop_toBottomOf="@id/layoutResumen"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -133,7 +143,7 @@
             android:contentDescription="Añadir registro"
             android:tint="@color/aureum_text"
             app:backgroundTint="@color/aureum_gold"
-            app:srcCompat="@drawable/mas"
+            app:srcCompat="@drawable/ic_add_plus"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="20dp"
@@ -239,14 +249,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp" />
 
-                    <!-- 👉 Campo de selección visualmente mejorado -->
                     <TextView
                         android:id="@+id/tvCuentaSeleccionada"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:gravity="center_vertical"
-                        android:paddingStart="14dp"
-                        android:paddingEnd="14dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
                         android:text="Todas"
                         android:textColor="@color/black"
                         android:textSize="15sp"
@@ -260,13 +269,25 @@
                 <!-- Botón reset de filtros a la derecha -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnResetFiltros"
-                    style="?attr/materialButtonOutlinedStyle"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
+                    android:minHeight="48dp"
+                    android:layout_marginTop="12dp"
                     android:text="Reset"
-                    android:textSize="12sp"
-                    android:textColor="@color/black"
-                    android:layout_marginStart="12dp" />
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    android:textColor="@color/aureum_text"
+                    android:layout_marginStart="12dp"
+                    android:backgroundTint="@color/aureum_beige"
+                    app:strokeColor="@color/aureum_gold"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="14dp"
+                    app:icon="@drawable/reset"
+                    app:iconTint="@color/aureum_text"
+                    app:iconPadding="6dp"
+                    app:iconSize="16dp"
+                    app:iconGravity="textStart" />
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

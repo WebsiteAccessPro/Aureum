@@ -27,6 +27,7 @@ class RegistroSectionAdapter(
 
     private val VIEW_TYPE_HEADER = 0
     private val VIEW_TYPE_ITEM = 1
+    private var onItemClick: ((Map<String, Any?>) -> Unit)? = null
 
     override fun getItemViewType(position: Int): Int = when (rows[position]) {
         is Row.Header -> VIEW_TYPE_HEADER
@@ -61,6 +62,8 @@ class RegistroSectionAdapter(
         accountsInfo = info
         notifyDataSetChanged()
     }
+
+    fun setOnItemClick(cb: (Map<String, Any?>) -> Unit) { onItemClick = cb }
 
     private fun rebuildRows() {
         rows.clear()
@@ -184,6 +187,7 @@ class RegistroSectionAdapter(
 
             val iconRes = CategoryResolver.iconFor(tipo, categoria, direction)
             imgCategoria.setImageResource(iconRes)
+            itemView.setOnClickListener { onItemClick?.invoke(item) }
         }
         // DateUtils.relativeDate ya cubre esta lógica
     }

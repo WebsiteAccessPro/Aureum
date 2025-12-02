@@ -9,6 +9,7 @@ import com.example.aureum1.R
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -27,6 +28,10 @@ class EditUserActivity : AppCompatActivity() {
     private lateinit var etGender: MaterialAutoCompleteTextView
     private lateinit var etBirthDate: TextInputEditText
     private lateinit var etAge: TextInputEditText
+    private lateinit var tilFullName: TextInputLayout
+    private lateinit var tilPhone: TextInputLayout
+    private lateinit var tilGender: TextInputLayout
+    private lateinit var tilBirthDate: TextInputLayout
 
     // Firebase
     private val auth by lazy { FirebaseAuth.getInstance() }
@@ -49,13 +54,17 @@ class EditUserActivity : AppCompatActivity() {
 
             // Bind con manejo de excepciones
             try {
-                toolbar     = findViewById(R.id.toolbarEditarPerfil)
-                etFullName  = findViewById(R.id.etFullName)
-                etEmail     = findViewById(R.id.etEmail)
-                etPhone     = findViewById(R.id.etPhone)
-                etGender    = findViewById(R.id.etGender)
-                etBirthDate = findViewById(R.id.etBirthDate)
-                etAge       = findViewById(R.id.etAge)
+                toolbar      = findViewById(R.id.toolbarEditarPerfil)
+                etFullName   = findViewById(R.id.etFullName)
+                etEmail      = findViewById(R.id.etEmail)
+                etPhone      = findViewById(R.id.etPhone)
+                etGender     = findViewById(R.id.etGender)
+                etBirthDate  = findViewById(R.id.etBirthDate)
+                etAge        = findViewById(R.id.etAge)
+                tilFullName  = findViewById(R.id.tilFullName)
+                tilPhone     = findViewById(R.id.tilPhone)
+                tilGender    = findViewById(R.id.tilGender)
+                tilBirthDate = findViewById(R.id.tilBirthDate)
             } catch (e: Exception) {
                 Toast.makeText(this, "Error al inicializar interfaz: ${e.message}", Toast.LENGTH_LONG).show()
                 finish()
@@ -94,6 +103,7 @@ class EditUserActivity : AppCompatActivity() {
             }
 
             // Date picker
+            tilBirthDate.setEndIconOnClickListener { mostrarDatePicker() }
             etBirthDate.setOnClickListener {
                 try {
                     mostrarDatePicker()
@@ -263,6 +273,12 @@ class EditUserActivity : AppCompatActivity() {
             val birth  = etBirthDate.text?.toString()?.trim()?.takeIf { it.isNotBlank() }
             val age    = birth?.let { calcularEdad(it) }
 
+            // limpiar errores visuales
+            tilFullName.error = null; tilFullName.isErrorEnabled = false
+            tilPhone.error = null; tilPhone.isErrorEnabled = false
+            tilGender.error = null; tilGender.isErrorEnabled = false
+            tilBirthDate.error = null; tilBirthDate.isErrorEnabled = false
+
             val patch = mutableMapOf<String, Any?>()
             if (nombre.isNotBlank()) {
                 patch["displayName"] = nombre
@@ -276,8 +292,25 @@ class EditUserActivity : AppCompatActivity() {
 
             // Validar datos antes de guardar
             if (nombre.isBlank()) {
-                Toast.makeText(this, "Por favor ingrese un nombre", Toast.LENGTH_SHORT).show()
+                tilFullName.isErrorEnabled = true
+                tilFullName.error = "Ingrese su nombre"
                 return
+            }
+
+            if (phone != null && phone.any { !it.isDigit() }) {
+                tilPhone.isErrorEnabled = true
+                tilPhone.error = "Solo números"
+                return
+            }
+
+            if (birth != null) {
+                try {
+                    java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault()).parse(birth)
+                } catch (_: Exception) {
+                    tilBirthDate.isErrorEnabled = true
+                    tilBirthDate.error = "Formato inválido (dd/MM/yyyy)"
+                    return
+                }
             }
 
             // Usar set con merge para permitir valores nulos sin crashes

@@ -59,7 +59,6 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 🔹 Referencias UI
         val bottomSheet = view.findViewById<View>(R.id.layoutFiltros)
         layoutCuentas = view.findViewById(R.id.layoutCuentas)
         tvCuentaSeleccionada = view.findViewById(R.id.tvCuentaSeleccionada)
@@ -88,8 +87,11 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
         }
         concatAdapter = ConcatAdapter(adapterReg, verMasAdapter)
         recycler.adapter = concatAdapter
+        adapterReg.setOnItemClick { item ->
+            showRecordDetail(item)
+        }
         // Desactivar nested scrolling para que el BottomSheet no reaccione a gestos fuera del área de filtros
-        recycler.isNestedScrollingEnabled = false
+        recycler.isNestedScrollingEnabled = true
 
         // ⚡ Botón flotante para agregar nuevo registro
         val fabNuevoRegistro = view.findViewById<FloatingActionButton>(R.id.fabNuevoRegistro)
@@ -103,7 +105,6 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
             startActivity(Intent(requireContext(), SearchActivity::class.java))
         }
 
-        // 🔸 Layouts del ViewPager
         val layouts = listOf(
             R.layout.item_filtro_rango,
             R.layout.item_filtro_selector,
@@ -131,12 +132,6 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
                             val cal = java.util.Calendar.getInstance().apply { time = end; add(java.util.Calendar.DAY_OF_YEAR, -30) }
                             val start = cal.time
                             applyFilter("Últimos 30 Días", start, end)
-                        }
-                        v.findViewById<View>(R.id.btn12Semanas)?.setOnClickListener {
-                            val end = java.util.Date()
-                            val cal = java.util.Calendar.getInstance().apply { time = end; add(java.util.Calendar.DAY_OF_YEAR, -84) }
-                            val start = cal.time
-                            applyFilter("Últimas 12 Semanas", start, end)
                         }
                         v.findViewById<View>(R.id.btn6Meses)?.setOnClickListener {
                             val end = java.util.Date()
@@ -256,15 +251,14 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
         })
 
         // Configurar el BottomSheet
-        behavior = BottomSheetBehavior.from(bottomSheet).apply {
-            // Altura mínima visible en estado colapsado (dp -> px)
-            val peekPx = (100 * resources.displayMetrics.density).toInt()
-            peekHeight = peekPx
-            // No permitir que el BottomSheet se oculte debajo de la barra inferior
+       behavior = BottomSheetBehavior.from(bottomSheet).apply {
+            peekHeight = (100 * resources.displayMetrics.density).toInt()
             isHideable = false
-            isDraggable = false
+            isDraggable = true 
             state = BottomSheetBehavior.STATE_COLLAPSED
         }
+
+
 
         // Asegurar que los últimos elementos del RecyclerView no queden tapados por el BottomSheet
         // Se suma el peekHeight al padding inferior actual
@@ -276,23 +270,6 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
                 recycler.paddingRight,
                 recycler.paddingBottom + peekPx
             )
-        }
-
-        // Solo permitir el arrastre cuando el toque se origina sobre el BottomSheet
-        bottomSheet.setOnTouchListener { _, event ->
-            when (event.actionMasked) {
-                MotionEvent.ACTION_DOWN -> {
-                    // Toque dentro del panel de filtros: habilitar arrastre
-                    behavior.isDraggable = true
-                    false
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    // Finaliza el gesto: deshabilitar arrastre para evitar activación fuera del área
-                    behavior.isDraggable = false
-                    false
-                }
-                else -> false
-            }
         }
 
         // Handle de la barra de filtros: tap para expandir/colapsar
@@ -362,6 +339,113 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
         }
         // Cargar registros al iniciar
         cargarRegistros()
+    }
+
+    private fun showRecordDetail(item: Map<String, Any?>) {
+        val ctx = requireContext()
+        val dialog = com.google.android.material.bottomsheet.BottomSheetDialog(ctx)
+        val v = layoutInflater.inflate(R.layout.bottomsheet_record_detail, null)
+
+        val tipo = (item["tipo"] as? String).orEmpty()
+        val categoria = (item["categoria"] as? String).orEmpty()
+        val cuentaOrigen = (item["cuentaOrigen"] as? String).orEmpty()
+        val cuentaDestino = (item["cuentaDestino"] as? String).orEmpty()
+        val nota = (item["nota"] as? String).orEmpty()
+        val monto = (item["monto"] as? Number)?.toDouble() ?: 0.0
+        val monedaRegistro = (item["moneda"] as? String)
+        val fechaStr = (item["fecha"] as? String).orEmpty()
+        val createdAt = item["createdAt"]
+        val direction = (item["direction"] as? String).orEmpty()
+
+        val catLower = categoria.lowercase(java.util.Locale.getDefault())
+        val alreadyPrefixed = catLower.startsWith("ingreso") || catLower.startsWith("gasto") || catLower.startsWith("transferencia")
+        val titulo = when (tipo.lowercase(java.util.Locale.getDefault())) {
+            "ingreso" -> if (alreadyPrefixed || categoria.isBlank()) categoria.ifBlank { "Ingreso" } else "Ingresos por $categoria"
+            "gasto" -> if (alreadyPrefixed || categoria.isBlank()) categoria.ifBlank { "Gasto" } else "Gastos en $categoria"
+            "transferencia" -> if (alreadyPrefixed || cuentaDestino.isBlank()) categoria.ifBlank { "Transferencia" } else "Transferencia a $cuentaDestino"
+            else -> categoria.ifBlank { "Registro" }
+        }
+
+        val cuentasLinea = if (tipo.equals("transferencia", true)) {
+            if (cuentaOrigen.isNotBlank() && cuentaDestino.isNotBlank()) "$cuentaOrigen → $cuentaDestino" else cuentaOrigen.ifBlank { cuentaDestino }
+        } else {
+            cuentaOrigen
+        }
+
+        var moneda = monedaRegistro
+        if (moneda.isNullOrBlank()) {
+            moneda = if (tipo.equals("transferencia", true) && direction == "in") {
+                accountsInfoByName[cuentaDestino]?.get("moneda") as? String
+            } else {
+                accountsInfoByName[cuentaOrigen]?.get("moneda") as? String
+            }
+        }
+        val monedaFinal = moneda ?: "PEN"
+        val nf = java.text.NumberFormat.getNumberInstance(java.util.Locale.getDefault()).apply { minimumFractionDigits = 2; maximumFractionDigits = 2 }
+        val sign = when {
+            tipo.equals("ingreso", true) -> "+"
+            tipo.equals("gasto", true) -> "-"
+            tipo.equals("transferencia", true) && direction == "in" -> "+"
+            tipo.equals("transferencia", true) && direction == "out" -> "-"
+            else -> ""
+        }
+
+        val tvTitulo = v.findViewById<TextView>(R.id.tvTituloRegistro)
+        val tvTipo = v.findViewById<TextView>(R.id.tvTipo)
+        val tvCuentas = v.findViewById<TextView>(R.id.tvCuentas)
+        val tvMonto = v.findViewById<TextView>(R.id.tvMonto)
+        val tvFecha = v.findViewById<TextView>(R.id.tvFecha)
+        val tvNota = v.findViewById<TextView>(R.id.tvNota)
+        val tvSaldo = v.findViewById<TextView>(R.id.tvSaldoPosterior)
+        val btnCerrar = v.findViewById<TextView>(R.id.btnCerrarDetalle)
+        val btnEliminar = v.findViewById<TextView>(R.id.btnEliminarRegistro)
+        val imgCategoria = v.findViewById<ImageView>(R.id.imgCategoria)
+
+        tvTitulo.text = titulo
+        tvTipo.text = tipo.ifBlank { "Registro" }
+        tvCuentas.text = cuentasLinea
+        tvMonto.text = "$monedaFinal $sign${nf.format(monto)}"
+        tvFecha.text = com.example.aureum1.model.DateUtils.relativeDate(fechaStr, createdAt)
+        tvNota.text = if (nota.isNotBlank()) "\"$nota\"" else ""
+
+        val saldoPosterior = (item["saldoPosterior"] as? Number)?.toDouble()
+        if (saldoPosterior != null) {
+            tvSaldo.visibility = View.VISIBLE
+            tvSaldo.text = "Saldo posterior: ${monedaFinal} ${nf.format(saldoPosterior)}"
+        } else {
+            tvSaldo.visibility = View.GONE
+        }
+
+        btnCerrar.setOnClickListener { dialog.dismiss() }
+        val iconRes = com.example.aureum1.model.CategoryResolver.iconFor(tipo, categoria, direction)
+        imgCategoria.setImageResource(iconRes)
+        val colorRes = when (tipo.lowercase(java.util.Locale.getDefault())) {
+            "ingreso" -> R.color.aureum_green
+            "gasto" -> R.color.red
+            "transferencia" -> if (direction == "out") R.color.aureum_gold_dark else R.color.aureum_gold
+            else -> R.color.md_hint
+        }
+        tvMonto.setTextColor(requireContext().getColor(colorRes))
+        btnEliminar.setOnClickListener {
+            val idDoc = (item["idDoc"] as? String)
+            val uid = auth.currentUser?.uid
+            if (idDoc.isNullOrBlank() || uid.isNullOrBlank()) {
+                android.widget.Toast.makeText(requireContext(), "No se pudo identificar el registro", android.widget.Toast.LENGTH_SHORT).show()
+            } else {
+                db.collection("accounts").document(uid)
+                    .collection("registros").document(idDoc)
+                    .delete()
+                    .addOnSuccessListener {
+                        android.widget.Toast.makeText(requireContext(), "Registro eliminado", android.widget.Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+                    .addOnFailureListener { e ->
+                        android.widget.Toast.makeText(requireContext(), e.message ?: "Error al eliminar", android.widget.Toast.LENGTH_SHORT).show()
+                    }
+            }
+        }
+        dialog.setContentView(v)
+        dialog.show()
     }
 
     private fun applyFilter(label: String, start: java.util.Date?, end: java.util.Date?) {
@@ -441,7 +525,12 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
 
         registrosListener = query.addSnapshotListener { snaps, err ->
             if (err != null || snaps == null) return@addSnapshotListener
-            val listRaw = snaps.documents.map { it.data ?: emptyMap<String, Any?>() }
+            val listRaw = snaps.documents.map { doc ->
+                val base = doc.data ?: emptyMap<String, Any?>()
+                val m = base.toMutableMap()
+                m["idDoc"] = doc.id
+                m
+            }
 
                 val list = mutableListOf<Map<String, Any?>>()
                 for (m in listRaw) {

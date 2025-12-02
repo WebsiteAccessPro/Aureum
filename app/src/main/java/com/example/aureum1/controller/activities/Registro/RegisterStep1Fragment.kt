@@ -2,7 +2,8 @@ package com.example.aureum1.controller.activities.Registro
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Patterns
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,6 +69,22 @@ class RegisterStep1Fragment : Fragment() {
                 onNextClicked?.invoke() 
             }
         }
+
+        etEmail.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) { tilEmail.error = null }
+        })
+        etPass.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) { tilPass.error = null }
+        })
+        etConfirm.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) { tilConfirm.error = null }
+        })
     }
     
     private val googleLauncher = registerForActivityResult(
@@ -116,23 +133,20 @@ class RegisterStep1Fragment : Fragment() {
         
         var isValid = true
         
-        // Validar email
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!isValidEmailStrict(email)) {
             tilEmail.error = "Correo inválido"
             isValid = false
         } else {
             tilEmail.error = null
         }
         
-        // Validar contraseña
-        if (pass.length < 6) {
-            tilPass.error = "Mínimo 6 caracteres"
+        if (!isStrongPassword(pass) || pass.contains(" ") || pass.equals(email, true)) {
+            tilPass.error = "Debe tener 8+, may/min, número y símbolo"
             isValid = false
         } else {
             tilPass.error = null
         }
         
-        // Validar confirmación
         if (confirm != pass) {
             tilConfirm.error = "No coincide"
             isValid = false
@@ -145,6 +159,25 @@ class RegisterStep1Fragment : Fragment() {
         }
         
         return isValid
+    }
+
+    private fun isValidEmailStrict(email: String): Boolean {
+        val r = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", RegexOption.IGNORE_CASE)
+        if (!r.matches(email)) return false
+        val domain = email.substringAfter("@")
+        if (domain.contains("..")) return false
+        val parts = domain.split('.')
+        if (parts.any { it.isEmpty() || it.startsWith('-') || it.endsWith('-') }) return false
+        return true
+    }
+
+    private fun isStrongPassword(p: String): Boolean {
+        if (p.length < 8) return false
+        val hasUpper = p.any { it.isUpperCase() }
+        val hasLower = p.any { it.isLowerCase() }
+        val hasDigit = p.any { it.isDigit() }
+        val hasSymbol = p.any { !it.isLetterOrDigit() }
+        return hasUpper && hasLower && hasDigit && hasSymbol
     }
     
     fun getData(): Pair<String, String> {

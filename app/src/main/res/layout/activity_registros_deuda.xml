@@ -10,7 +10,7 @@
         android:id="@+id/toolbarRegistrosDeuda"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/aureum_beige"
+        android:background="@color/aureum_gold"
         android:title="Registros de deuda"
         android:titleTextColor="@color/aureum_text"
         app:navigationIcon="@drawable/ic_close_small" />

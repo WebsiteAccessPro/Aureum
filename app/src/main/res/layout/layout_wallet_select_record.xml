@@ -1,66 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:background="@color/aureum_cream"
-    android:padding="24dp">
+    android:background="@color/aureum_cream">
 
-    <!-- Imagen de billetera -->
-    <ImageView
-        android:id="@+id/imgWallet"
-        android:layout_width="145dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_wallet" />
-
-    <!-- Título -->
-    <TextView
-        android:id="@+id/tvTitulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="¿Ya tienes este registro de deuda en Wallet?"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="12dp" />
-
-    <!-- Descripción -->
-    <TextView
-        android:id="@+id/tvDescripcion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Seleccione un registro para definir su deuda.\nSi no tiene ningún registro, puede crearlo más tarde."
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        android:gravity="center"
-        android:layout_marginBottom="40dp" />
-
-    <!-- Botón Sí -->
-    <Button
-        android:id="@+id/btnSeleccionar"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SÍ, SELECCIONAR REGISTRO"
-        android:textAllCaps="true"
-        android:textColor="@color/black"
-        android:backgroundTint="#C9AA66"
-        android:layout_marginBottom="12dp" />
+        android:background="@color/aureum_gold"
+        android:elevation="4dp">
 
-    <!-- Botón No -->
-    <TextView
-        android:id="@+id/btnOmitir"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="NO, OMITIR"
-        android:textSize="14sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginTop="4dp" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbarWalletSelect"
+            android:layout_width="match_parent"
+            app:titleCentered="true"
+            android:layout_height="?attr/actionBarSize"
+            android:paddingHorizontal="8dp"
+            app:title="Seleccionar registro"
+            app:titleTextColor="@color/black"
+            app:navigationIcon="@drawable/ic_close_small" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-</LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:fillViewport="true"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="6dp"
+                app:strokeColor="@color/aureum_border"
+                app:strokeWidth="1dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_card_gradient"
+                    android:padding="20dp">
+
+                    <!-- Imagen de billetera -->
+                    <ImageView
+                        android:id="@+id/imgWallet"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:contentDescription="@string/app_name"
+                        android:src="@drawable/ic_wallet"/>
+
+                    <!-- Título -->
+                    <TextView
+                        android:id="@+id/tvTitulo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¿Ya tienes este registro de deuda en Wallet?"
+                        android:textColor="@color/aureum_text"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_marginBottom="10dp" />
+
+                    <!-- Descripción -->
+                    <TextView
+                        android:id="@+id/tvDescripcion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Selecciona un registro para definir tu deuda.\nSi no tienes ninguno, puedes crearlo más tarde."
+                        android:textColor="@color/aureum_text"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:layout_marginBottom="24dp" />
+
+                    <!-- Botón Sí -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSeleccionar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Sí, seleccionar registro"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:layout_marginBottom="12dp"
+                        app:backgroundTint="@color/aureum_gold"
+                        app:cornerRadius="28dp"
+                        app:icon="@drawable/ic_check_circle"
+                        app:iconTint="@color/white"
+                        app:iconSize="22dp"
+                        app:iconPadding="10dp"
+                        app:iconGravity="textStart" />
+
+                    <!-- Botón No -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnOmitir"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No, omitir"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@color/aureum_gray"
+                        app:cornerRadius="28dp"
+                        app:icon="@drawable/ic_close_small"
+                        app:iconTint="@color/white"
+                        app:iconSize="22dp"
+                        app:iconPadding="10dp"
+                        app:iconGravity="textStart" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

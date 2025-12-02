@@ -34,6 +34,9 @@ class RegistroGastoActivity : AppCompatActivity() {
         val moneda = intent.getStringExtra("MONEDA") ?: "PEN"
         toolbar.title = "$moneda $monto"
         toolbar.setNavigationOnClickListener { finish() }
+        // Configurar menú contextual: ocultar cuenta bancaria y renombrar a Guardar Gasto
+        toolbar.menu.findItem(R.id.action_guardar_overflow)?.isVisible = false
+        toolbar.menu.findItem(R.id.action_guardar)?.title = "Guardar Gasto"
         toolbar.setOnMenuItemClickListener { item ->
             if (item.itemId == R.id.action_guardar) {
                 val data = Intent().apply {

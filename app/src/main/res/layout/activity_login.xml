@@ -20,15 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:id="@+id/btnHelp"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:src="@drawable/help"
-            android:contentDescription="Ayuda"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Contenedor desplazable -->
@@ -38,56 +29,69 @@
         android:layout_height="0dp"
         android:scrollbars="none"
         android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
         app:layout_constraintTop_toBottomOf="@id/topBar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="24dp"
-            android:gravity="center_horizontal">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
             <!-- Card principal -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/loginCard"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="8dp"
-                android:backgroundTint="#FFFFFF"
-                android:padding="20dp">
+                android:padding="20dp"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="6dp"
+                app:strokeColor="#E6E2D6"
+                app:strokeWidth="1dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.99">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center_horizontal"
-                    android:paddingHorizontal="8dp"
+                    android:paddingHorizontal="12dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp">
 
-                    <!-- Bienvenida -->
+                    <!-- Bienvenida dentro del card -->
                     <TextView
                         android:id="@+id/tvWelcome"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Hola,\nbienvenido a"
+                        android:text="Bienvenidos"
                         android:textColor="#5B4E2D"
-                        android:textSize="20sp"
+                        android:textSize="22sp"
                         android:textStyle="bold"
                         android:gravity="center"
-                        android:layout_marginBottom="6dp"/>
+                        android:layout_marginBottom="10dp"/>
+
+                    <!-- Franja separadora entre el título y el logo -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0"
+                        android:layout_marginBottom="10dp"/>
 
                     <!-- Logo -->
                     <ImageView
                         android:id="@+id/imgLogo"
-                        android:layout_width="120dp"
-                        android:layout_height="110dp"
+                        android:layout_width="140dp"
+                        android:layout_height="120dp"
                         android:adjustViewBounds="true"
                         android:scaleType="fitCenter"
                         android:src="@drawable/icono"
@@ -113,12 +117,15 @@
 
                         <!-- Usuario / Correo -->
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilLoginEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Usuario o correo"
+                            android:hint="Correo electrónico"
                             app:startIconDrawable="@drawable/ic_mail_24"
                             app:boxBackgroundMode="outline"
                             app:boxCornerRadiusTopStart="16dp"
+                            app:boxCornerRadiusTopEnd="16dp"
+                            app:boxCornerRadiusBottomStart="16dp"
                             app:boxCornerRadiusBottomEnd="16dp"
                             app:boxStrokeColor="#1E3C72"
                             app:boxBackgroundColor="#FFFFFF"
@@ -137,6 +144,7 @@
 
                         <!-- Contraseña -->
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilLoginPass"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Contraseña"
@@ -144,6 +152,8 @@
                             app:startIconDrawable="@drawable/ic_lock_24"
                             app:boxBackgroundMode="outline"
                             app:boxCornerRadiusTopStart="16dp"
+                            app:boxCornerRadiusTopEnd="16dp"
+                            app:boxCornerRadiusBottomStart="16dp"
                             app:boxCornerRadiusBottomEnd="16dp"
                             app:boxStrokeColor="#1E3C72"
                             app:boxBackgroundColor="#FFFFFF"
@@ -190,23 +200,23 @@
                                 app:layout_constraintBottom_toBottomOf="@id/chkRemember"/>
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <!-- Botón Login -->
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnLogin"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:minHeight="48dp"
-                            android:text="Iniciar Sesión"
-                            android:textAllCaps="false"
-                            android:textColor="@color/white"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:gravity="center"
-                            android:backgroundTint="#C9AA64"
-                            app:cornerRadius="24dp"
-                            android:elevation="6dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginBottom="10dp"/>
+                    <!-- Botón Login -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:text="Iniciar Sesión"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:backgroundTint="@color/aureum_gold"
+                        app:cornerRadius="24dp"
+                        android:elevation="6dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="10dp"/>
 
                     </LinearLayout>
 
@@ -220,16 +230,36 @@
                         android:textSize="13sp"
                         android:layout_marginBottom="8dp"/>
 
-                    <!-- Divider social -->
-                    <TextView
-                        android:id="@+id/tvSocialDivider"
+                    <!-- Divider social mejorado -->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="---- Inicia sesión usando ----"
-                        android:textColor="#8A8A8A"
-                        android:textSize="13sp"
-                        android:gravity="center"
-                        android:layout_marginBottom="6dp"/>
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="6dp">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"
+                            android:background="#E0E0E0"/>
+
+                        <TextView
+                            android:id="@+id/tvSocialDivider"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Inicia sesión con"
+                            android:textColor="#8A8A8A"
+                            android:textSize="12sp"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"/>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"
+                            android:background="#E0E0E0"/>
+                    </LinearLayout>
 
                     <!-- Botones sociales -->
                     <LinearLayout
@@ -247,7 +277,11 @@
                             android:layout_weight="1"
                             android:text="Google"
                             android:textAllCaps="false"
-                            android:backgroundTint="#FFFFFF"
+                            android:textSize="14sp"
+                            android:textColor="@color/aureum_text"
+                            android:backgroundTint="@color/aureum_beige"
+                            app:strokeColor="@color/aureum_gold"
+                            app:strokeWidth="1dp"
                             app:icon="@drawable/cromo"
                             app:iconGravity="textStart"
                             app:iconPadding="6dp"
@@ -263,7 +297,11 @@
                             android:layout_weight="1"
                             android:text="Facebook"
                             android:textAllCaps="false"
-                            android:backgroundTint="#FFFFFF"
+                            android:textSize="14sp"
+                            android:textColor="@color/aureum_text"
+                            android:backgroundTint="@color/aureum_beige"
+                            app:strokeColor="@color/aureum_gold"
+                            app:strokeWidth="1dp"
                             app:icon="@drawable/facebook"
                             app:iconGravity="textStart"
                             app:iconPadding="6dp"
@@ -272,36 +310,42 @@
                             android:layout_marginStart="6dp"/>
                     </LinearLayout>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Acceso Biométrico -->
             <LinearLayout
                 android:id="@+id/biometricSection"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="24dp">
+                android:layout_marginTop="11dp"
+                android:layout_marginBottom="24dp"
+                android:padding="10dp"
+                android:background="@drawable/bg_biometric_pill"
+                app:layout_constraintTop_toBottomOf="@id/loginCard"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.94">
 
                 <ImageView
                     android:id="@+id/imgBiometric"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/huella"
+                    app:tint="@color/aureum_gold"
                     android:contentDescription="Acceso Biométrico"/>
 
                 <TextView
                     android:id="@+id/tvBiometric"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Acceso Biométrico: Huella digital"
-                    android:textColor="#000000"
+                    android:text="Acceso biométrico: Huella digital"
+                    android:textColor="@color/aureum_text"
                     android:textSize="14sp"
-                    android:textStyle="bold"
                     android:layout_marginStart="10dp"/>
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

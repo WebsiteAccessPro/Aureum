@@ -9,14 +9,17 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#C9AA66">
+        android:background="#C9AA66"
+        app:liftOnScroll="false"
+        android:stateListAnimator="@null">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbarSeleccionCuenta"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/flechaizquierda2"
+            app:navigationIcon="@drawable/ic_close_small"
             app:title="Seleccionar cuenta"
+            app:titleCentered="true"
             app:titleTextColor="@color/aureum_text"/>
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -53,6 +53,8 @@ class RegistrosDeudaActivity : AppCompatActivity() {
             toolbar.menu.findItem(R.id.action_forgive)?.isVisible = isPresto
             toolbar.menu.findItem(R.id.action_close)?.isVisible = !isPresto
             toolbar.menu.findItem(R.id.action_save)?.isVisible = false
+            toolbar.menu.findItem(R.id.action_save_overflow)?.isVisible = false
+            toolbar.menu.findItem(R.id.action_delete_overflow)?.isVisible = false
         }
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
