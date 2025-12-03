@@ -92,6 +92,8 @@ class EditUserActivity : AppCompatActivity() {
             toolbar.menu.findItem(R.id.action_forgive)?.isVisible = false
             toolbar.menu.findItem(R.id.action_close)?.isVisible = false
             toolbar.menu.findItem(R.id.action_edit_debt)?.isVisible = false
+            toolbar.menu.findItem(R.id.action_save_overflow)?.isVisible = false
+            toolbar.menu.findItem(R.id.action_delete_overflow)?.isVisible = false
 
             // Géneros
             try {
@@ -155,7 +157,7 @@ class EditUserActivity : AppCompatActivity() {
                             else -> ""
                         }
                         etPhone.setText(phoneText)
-                        etPhone.isEnabled = false
+                        etPhone.isEnabled = phoneText.isBlank()
 
                         // Género
                         val gender = snap.getString("gender") ?: ""
@@ -317,6 +319,7 @@ class EditUserActivity : AppCompatActivity() {
             db.collection("users").document(uid).set(patch, SetOptions.merge())
                 .addOnSuccessListener {
                     Toast.makeText(this, "Perfil actualizado", Toast.LENGTH_SHORT).show()
+                    etPhone.isEnabled = false
                     setResult(RESULT_OK)
                     finish()
                 }
