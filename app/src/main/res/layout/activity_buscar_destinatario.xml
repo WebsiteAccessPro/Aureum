@@ -56,7 +56,7 @@
                 android:id="@+id/tilPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:prefixText="+51"
+                app:prefixText=""
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusTopStart="10dp"
                 app:boxCornerRadiusTopEnd="10dp"

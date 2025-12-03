@@ -70,7 +70,6 @@ class BuscarDestinatarioActivity : AppCompatActivity() {
     }
 
     private fun buscarPorTelefono() {
-        // Tomar sólo dígitos del campo, ignorando prefijo visible
         val raw = etPhone.text?.toString()?.trim().orEmpty()
         val phoneDigits = raw.filter { it.isDigit() }
         if (phoneDigits.isEmpty()) {
@@ -80,33 +79,62 @@ class BuscarDestinatarioActivity : AppCompatActivity() {
         tilPhone.error = null
 
         db.collection("users")
-            .whereEqualTo("phone", phoneDigits.toLongOrNull() ?: phoneDigits)
+            .whereEqualTo("phone", phoneDigits)
             .limit(1)
             .get()
             .addOnSuccessListener { snap ->
-                if (snap.isEmpty) {
-                    cardUser.visibility = View.GONE
-                    rvCuentas.visibility = View.GONE
-                    foundUid = null
-                    com.google.android.material.snackbar.Snackbar
-                        .make(tilPhone, "Usuario no encontrado", com.google.android.material.snackbar.Snackbar.LENGTH_SHORT)
-                        .show()
-                } else {
+                if (!snap.isEmpty) {
                     val doc = snap.documents.first()
-                    foundUid = doc.id
-                    val fullName = doc.getString("fullName").orEmpty()
-                    val telefono = (doc.get("phone")?.toString()).orEmpty()
-                    tvNombre.text = fullName
-                    tvTelefono.text = telefono
-                    cardUser.visibility = View.VISIBLE
-                    cargarCuentasUsuario(foundUid!!)
+                    handleUserFound(doc)
+                } else {
+                    val asLong = phoneDigits.toLongOrNull()
+                    if (asLong == null) {
+                        showUserNotFound()
+                        return@addOnSuccessListener
+                    }
+                    db.collection("users")
+                        .whereEqualTo("phone", asLong)
+                        .limit(1)
+                        .get()
+                        .addOnSuccessListener { snapNum ->
+                            if (snapNum.isEmpty) {
+                                showUserNotFound()
+                            } else {
+                                val doc = snapNum.documents.first()
+                                handleUserFound(doc)
+                            }
+                        }
+                        .addOnFailureListener { e -> showError(e)
+                        }
                 }
             }
-            .addOnFailureListener { e ->
-                com.google.android.material.snackbar.Snackbar
-                    .make(tilPhone, "Error: ${e.message}", com.google.android.material.snackbar.Snackbar.LENGTH_SHORT)
-                    .show()
-            }
+            .addOnFailureListener { e -> showError(e) }
+    }
+
+    private fun handleUserFound(doc: com.google.firebase.firestore.DocumentSnapshot) {
+        foundUid = doc.id
+        val fullName = doc.getString("fullName").orEmpty()
+        val telefono = (doc.get("phone")?.toString()).orEmpty()
+        tvNombre.text = fullName
+        tvTelefono.text = telefono
+        cardUser.visibility = View.VISIBLE
+        cargarCuentasUsuario(foundUid!!)
+        rvCuentas.visibility = View.VISIBLE
+    }
+
+    private fun showUserNotFound() {
+        cardUser.visibility = View.GONE
+        rvCuentas.visibility = View.GONE
+        foundUid = null
+        com.google.android.material.snackbar.Snackbar
+            .make(tilPhone, "Usuario no encontrado", com.google.android.material.snackbar.Snackbar.LENGTH_SHORT)
+            .show()
+    }
+
+    private fun showError(e: Exception) {
+        com.google.android.material.snackbar.Snackbar
+            .make(tilPhone, "Error: ${e.message}", com.google.android.material.snackbar.Snackbar.LENGTH_SHORT)
+            .show()
     }
 
     private fun cargarCuentasUsuario(uid: String) {
